@@ -1,0 +1,156 @@
+// In general, while you can use proto2 (the current default protocol buffers
+// version), we recommend that you use proto3 with gRPC as it lets you use the
+// full range of gRPC-supported languages, as well as avoiding compatibility
+// issues with proto2 clients talking to proto3 servers and vice versa.
+syntax = "proto3";
+
+// The package name determines the name of the directories that truss creates
+// for `package echo;` truss will create the directory "echo-service".
+package vpnsvc;
+
+import "github.com/metaverse/truss/deftree/googlethirdparty/annotations.proto";
+
+service Vpnsvc {
+
+rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse) {
+  option (google.api.http) = {
+    // All fields (In) are query parameters of the http request unless otherwise specified
+    post: "/order/create"
+    body: "*"
+
+    additional_bindings {
+      // Trailing slashes are different routes
+      post: "/order/create/"
+      body: "*"
+    }
+  };
+}
+
+rpc UpdateOrder (UpdateOrderRequest) returns (UpdateOrderResponse) {
+  option (google.api.http) = {
+      post: "/order/update"
+      body: "*"
+
+      additional_bindings {
+        // Trailing slashes are different routes
+        post: "/order/update/"
+        body: "*"
+      }
+  };
+}
+
+rpc VpnInfo (VpnInfoRequest) returns (VpnInfoResponse) {
+  option (google.api.http) = {
+    get: "/info"
+    additional_bindings {
+      get: "/info/"
+    }
+  };
+}
+
+rpc FetchOrders (FetchOrdersRequest) returns (FetchOrdersResponse) {
+  option (google.api.http) = {
+    get: "/orders"
+    additional_bindings {
+      get: "/orders/"
+    }
+  };
+}
+
+rpc FetchOrderInfo (FetchOrderInfoRequest) returns (FetchOrderInfoResponse) {
+  option (google.api.http) = {
+    get: "/order_info"
+    additional_bindings {
+      get: "/order_info/"
+    }
+  };
+}
+
+}
+
+message VpnInfoRequest {
+    string ethAddress = 1;
+}
+
+message Subscription {
+    string expireTime = 1;
+}
+
+message VpnOrder {
+    string orderId = 1;
+    string status = 2;
+    string amount = 3;
+    string chain = 4;
+    string token = 5;
+    string txnHash = 6;
+    string createTime = 7;
+}
+
+message VpnInfoResult {
+  uint64 status = 1;
+  Subscription subscription = 2;
+  repeated VpnOrder orders = 3;
+}
+
+message VpnInfoResponse {
+    uint64 code = 1;
+    VpnInfoResult data = 2;
+    string error = 3;
+}
+
+message FetchOrdersRequest {
+    string ethAddress = 1;
+}
+
+message FetchOrdersResult {
+    repeated VpnOrder orders = 1;
+}
+
+message FetchOrdersResponse {
+    uint64 code = 1;
+    FetchOrdersResult data = 2;
+    string error = 3;
+}
+
+message FetchOrderInfoRequest {
+    string ethAddress = 1;
+    string orderId = 2;
+}
+
+message FetchOrderInfoResponse {
+    uint64 code = 1;
+    VpnOrder data = 2;
+    string error = 3;
+}
+
+message CreateOrderResult {
+    string orderId = 1;
+}
+
+message CreateOrderRequest {
+    string ethAddress = 1;
+    uint64 chainId = 2;
+    uint64 planId = 3;
+}
+
+message CreateOrderResponse {
+    uint64 code = 1;
+    CreateOrderResult data = 2;
+    string error = 3;
+}
+
+message UpdateOrderResult {
+    bool status = 1;
+}
+
+message UpdateOrderRequest {
+    string ethAddress = 1;
+    string orderId = 2;
+    string txnHash = 3;
+}
+
+message UpdateOrderResponse {
+    uint64 code = 1;
+    UpdateOrderResult data = 2;
+    string error = 3;
+}
