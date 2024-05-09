@@ -65,7 +65,7 @@ func (s vpnsvcService) CreateOrder(ctx context.Context, in *pb.CreateOrderReques
 	var resp pb.CreateOrderResponse
 	resp.Code = 0
 	resp.Data = &pb.CreateOrderResult{
-		OrderId: order.ID.String(),
+		OrderId: order.ID.Hex(),
 	}
 	return &resp, nil
 }
@@ -103,7 +103,7 @@ func (s vpnsvcService) VpnInfo(ctx context.Context, in *pb.VpnInfoRequest) (*pb.
 			statusText, _ := enum.VpnOrderStatusText[v.Status]
 			chainText, _ := enum.Chains[v.ChainID]
 			vo = append(vo, &pb.VpnOrder{
-				OrderId: v.ID.String(),
+				OrderId: v.ID.Hex(),
 				Status: statusText,
 				Amount: v.TokenAmount,
 				Chain: chainText,
@@ -133,7 +133,7 @@ func (s vpnsvcService) FetchOrderInfo(ctx context.Context, in *pb.FetchOrderInfo
 	statusText, _ := enum.VpnOrderStatusText[order.Status]
 	chainText, _ := enum.Chains[order.ChainID]
 	resp.Data = &pb.VpnOrder{
-		OrderId: order.ID.String(),
+		OrderId: order.ID.Hex(),
 		Status: statusText,
 		Amount: order.TokenAmount,
 		Chain: chainText,
@@ -160,7 +160,7 @@ func (s vpnsvcService) FetchOrders(ctx context.Context, in *pb.FetchOrdersReques
 			statusText, _ := enum.VpnOrderStatusText[v.Status]
 			chainText, _ := enum.Chains[v.ChainID]
 			vo = append(vo, &pb.VpnOrder{
-				OrderId: v.ID.String(),
+				OrderId: v.ID.Hex(),
 				Status: statusText,
 				Amount: v.TokenAmount,
 				Chain: chainText,
