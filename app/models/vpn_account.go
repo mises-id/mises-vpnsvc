@@ -34,7 +34,6 @@ func (m *VpnAccount) Upsert(ctx context.Context) error {
 	t := time.Now()
 	filter := bson.D{
 		{"misesid", m.MisesID},
-		{"last_order_id", bson.D{{"$ne", m.LastOrderId}}},
 	}
 	update := bson.M{
 		"$setOnInsert": bson.M{
