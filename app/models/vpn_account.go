@@ -38,7 +38,6 @@ func (m *VpnAccount) Upsert(ctx context.Context) error {
 	update := bson.M{
 		"$setOnInsert": bson.M{
 			"misesid":       m.MisesID,
-			"last_order_id": m.LastOrderId,
 			"status":        AccountAvailable,
 			"created_at":    t,
 			"updated_at":    t,
