@@ -11,15 +11,16 @@ import (
 var Envs *Env
 
 type Env struct {
-	Port             int    `env:"PORT" envDefault:"8080"`
-	AppEnv           string `env:"APP_ENV" envDefault:"development"`
-	LogLevel         string `env:"LOG_LEVEL" envDefault:"INFO"`
-	MongoURI         string `env:"MONGO_URI" envDefault:"mongodb://localhost:27017"`
-	DBUser           string `env:"DB_USER"`
-	DBPass           string `env:"DB_PASS"`
-	DBName           string `env:"DB_NAME" envDefault:"mises_vpn_test"`
-	SyncVpnOrderMode string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
-	RootPath         string
+	Port               int    `env:"PORT" envDefault:"8080"`
+	AppEnv             string `env:"APP_ENV" envDefault:"development"`
+	LogLevel           string `env:"LOG_LEVEL" envDefault:"INFO"`
+	MongoURI           string `env:"MONGO_URI" envDefault:"mongodb://localhost:27017"`
+	DBUser             string `env:"DB_USER"`
+	DBPass             string `env:"DB_PASS"`
+	DBName             string `env:"DB_NAME" envDefault:"mises_vpn_test"`
+	MisesVpnPrivateKey string `env:"MISES_VPN_PRIVATE_KEY" envDefault:""`
+	SyncVpnOrderMode   string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
+	RootPath           string
 }
 
 func init() {

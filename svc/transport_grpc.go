@@ -59,6 +59,18 @@ func MakeGRPCServer(endpoints Endpoints, options ...grpctransport.ServerOption) 
 			EncodeGRPCFetchOrderInfoResponse,
 			serverOptions...,
 		),
+		getserverlist: grpctransport.NewServer(
+			endpoints.GetServerListEndpoint,
+			DecodeGRPCGetServerListRequest,
+			EncodeGRPCGetServerListResponse,
+			serverOptions...,
+		),
+		getserverlink: grpctransport.NewServer(
+			endpoints.GetServerLinkEndpoint,
+			DecodeGRPCGetServerLinkRequest,
+			EncodeGRPCGetServerLinkResponse,
+			serverOptions...,
+		),
 	}
 }
 
@@ -69,6 +81,8 @@ type grpcServer struct {
 	vpninfo        grpctransport.Handler
 	fetchorders    grpctransport.Handler
 	fetchorderinfo grpctransport.Handler
+	getserverlist  grpctransport.Handler
+	getserverlink  grpctransport.Handler
 }
 
 // Methods for grpcServer to implement VpnsvcServer interface
@@ -113,6 +127,22 @@ func (s *grpcServer) FetchOrderInfo(ctx context.Context, req *pb.FetchOrderInfoR
 	return rep.(*pb.FetchOrderInfoResponse), nil
 }
 
+func (s *grpcServer) GetServerList(ctx context.Context, req *pb.GetServerListRequest) (*pb.GetServerListResponse, error) {
+	_, rep, err := s.getserverlist.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return rep.(*pb.GetServerListResponse), nil
+}
+
+func (s *grpcServer) GetServerLink(ctx context.Context, req *pb.GetServerLinkRequest) (*pb.GetServerLinkResponse, error) {
+	_, rep, err := s.getserverlink.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return rep.(*pb.GetServerLinkResponse), nil
+}
+
 // Server Decode
 
 // DecodeGRPCCreateOrderRequest is a transport/grpc.DecodeRequestFunc that converts a
@@ -150,6 +180,20 @@ func DecodeGRPCFetchOrderInfoRequest(_ context.Context, grpcReq interface{}) (in
 	return req, nil
 }
 
+// DecodeGRPCGetServerListRequest is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC getserverlist request to a user-domain getserverlist request. Primarily useful in a server.
+func DecodeGRPCGetServerListRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
+	req := grpcReq.(*pb.GetServerListRequest)
+	return req, nil
+}
+
+// DecodeGRPCGetServerLinkRequest is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC getserverlink request to a user-domain getserverlink request. Primarily useful in a server.
+func DecodeGRPCGetServerLinkRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
+	req := grpcReq.(*pb.GetServerLinkRequest)
+	return req, nil
+}
+
 // Server Encode
 
 // EncodeGRPCCreateOrderResponse is a transport/grpc.EncodeResponseFunc that converts a
@@ -184,6 +228,20 @@ func EncodeGRPCFetchOrdersResponse(_ context.Context, response interface{}) (int
 // user-domain fetchorderinfo response to a gRPC fetchorderinfo reply. Primarily useful in a server.
 func EncodeGRPCFetchOrderInfoResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(*pb.FetchOrderInfoResponse)
+	return resp, nil
+}
+
+// EncodeGRPCGetServerListResponse is a transport/grpc.EncodeResponseFunc that converts a
+// user-domain getserverlist response to a gRPC getserverlist reply. Primarily useful in a server.
+func EncodeGRPCGetServerListResponse(_ context.Context, response interface{}) (interface{}, error) {
+	resp := response.(*pb.GetServerListResponse)
+	return resp, nil
+}
+
+// EncodeGRPCGetServerLinkResponse is a transport/grpc.EncodeResponseFunc that converts a
+// user-domain getserverlink response to a gRPC getserverlink reply. Primarily useful in a server.
+func EncodeGRPCGetServerLinkResponse(_ context.Context, response interface{}) (interface{}, error) {
+	resp := response.(*pb.GetServerLinkResponse)
 	return resp, nil
 }
 

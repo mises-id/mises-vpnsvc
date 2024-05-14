@@ -4,6 +4,23 @@ import (
 	"context"
 	"errors"
 	"github.com/mises-id/mises-vpnsvc/app/models"
+	"github.com/mises-id/mises-vpnsvc/app/provider"
+	pb "github.com/mises-id/mises-vpnsvc/proto"
+	"time"
+)
+
+// todo:test get from env
+
+var (
+	ServerList = []*pb.GetServerListItem{
+		{
+			Ip:   "34.230.112.190",
+			Name: "Mises Test",
+		},
+	}
+	ServerAddressList = map[string]struct{}{
+		"34.230.112.190": {},
+	}
 )
 
 func ModifyVpnAccount(ctx context.Context, order *models.VpnOrder) error {
@@ -41,7 +58,7 @@ func ModifyVpnAccount(ctx context.Context, order *models.VpnOrder) error {
 	} else if order.OrderAt.After(va.StartAt) {
 		if order.OrderAt.Before(va.EndAt) || order.OrderAt.Equal(va.EndAt) {
 			va.EndAt = va.EndAt.Add(order.TimeRange)
-		}else {
+		} else {
 			va.StartAt = order.OrderAt
 			va.EndAt = orderEndAt
 		}
@@ -54,4 +71,44 @@ func ModifyVpnAccount(ctx context.Context, order *models.VpnOrder) error {
 
 	// 3. update by last_order_id
 	return va.UpdateByLastOrderId(ctx)
+}
+
+func CheckVpnAccount(ctx context.Context, misesId string) (*models.VpnAccount, error) {
+	va, err := models.FindVpnAccountByMisesId(ctx, misesId)
+	if err != nil {
+		return nil, err
+	}
+	if va.Status != models.AccountAvailable {
+		return nil, errors.New("account unavailable")
+	}
+	t := time.Now()
+	if !va.EndAt.After(t) {
+		return nil, errors.New("subscription expired")
+	}
+	return va, nil
+}
+
+func GetServerList(ctx context.Context, in *pb.GetServerListRequest) ([]*pb.GetServerListItem, error) {
+	if _, err := CheckVpnAccount(ctx, in.EthAddress); err != nil {
+		return nil, err
+	}
+	return ServerList, nil
+}
+
+func GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (string, error) {
+	if _, ok := ServerAddressList[in.Server]; !ok {
+		return "", errors.New("server error")
+	}
+
+	va, err := CheckVpnAccount(ctx, in.EthAddress)
+	if err != nil {
+		return "", err
+	}
+
+	// todo: check本地库的inbound信息
+
+	xui := &provider.MisesXuiClient{}
+	return xui.AddInbounds(va.MisesID, va.LastOrderId.Hex(), in.Server, va.EndAt.Unix())
+
+	// todo: 更新本地库的inbound信息
 }

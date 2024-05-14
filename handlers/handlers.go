@@ -50,11 +50,11 @@ func (s vpnsvcService) CreateOrder(ctx context.Context, in *pb.CreateOrderReques
 
 	// data
 	order := &models.VpnOrder{
-		MisesID: in.EthAddress,
-		ChainID: in.ChainId,
-		TokenName: p.TokenName,
+		MisesID:     in.EthAddress,
+		ChainID:     in.ChainId,
+		TokenName:   p.TokenName,
 		TokenAmount: p.TokenAmount,
-		TimeRange: p.TimeRange,
+		TimeRange:   p.TimeRange,
 	}
 
 	// create
@@ -103,12 +103,12 @@ func (s vpnsvcService) VpnInfo(ctx context.Context, in *pb.VpnInfoRequest) (*pb.
 			statusText, _ := enum.VpnOrderStatusText[v.Status]
 			chainText, _ := enum.Chains[v.ChainID]
 			vo = append(vo, &pb.VpnOrder{
-				OrderId: v.ID.Hex(),
-				Status: statusText,
-				Amount: v.TokenAmount,
-				Chain: chainText,
-				Token: v.TokenName,
-				TxnHash: v.TxnHash,
+				OrderId:    v.ID.Hex(),
+				Status:     statusText,
+				Amount:     v.TokenAmount,
+				Chain:      chainText,
+				Token:      v.TokenName,
+				TxnHash:    v.TxnHash,
 				CreateTime: v.CreatedAt.Format(time.DateTime),
 			})
 		}
@@ -133,12 +133,12 @@ func (s vpnsvcService) FetchOrderInfo(ctx context.Context, in *pb.FetchOrderInfo
 	statusText, _ := enum.VpnOrderStatusText[order.Status]
 	chainText, _ := enum.Chains[order.ChainID]
 	resp.Data = &pb.VpnOrder{
-		OrderId: order.ID.Hex(),
-		Status: statusText,
-		Amount: order.TokenAmount,
-		Chain: chainText,
-		Token: order.TokenName,
-		TxnHash: order.TxnHash,
+		OrderId:    order.ID.Hex(),
+		Status:     statusText,
+		Amount:     order.TokenAmount,
+		Chain:      chainText,
+		Token:      order.TokenName,
+		TxnHash:    order.TxnHash,
 		CreateTime: order.CreatedAt.Format(time.DateTime),
 	}
 	return &resp, nil
@@ -160,16 +160,40 @@ func (s vpnsvcService) FetchOrders(ctx context.Context, in *pb.FetchOrdersReques
 			statusText, _ := enum.VpnOrderStatusText[v.Status]
 			chainText, _ := enum.Chains[v.ChainID]
 			vo = append(vo, &pb.VpnOrder{
-				OrderId: v.ID.Hex(),
-				Status: statusText,
-				Amount: v.TokenAmount,
-				Chain: chainText,
-				Token: v.TokenName,
-				TxnHash: v.TxnHash,
+				OrderId:    v.ID.Hex(),
+				Status:     statusText,
+				Amount:     v.TokenAmount,
+				Chain:      chainText,
+				Token:      v.TokenName,
+				TxnHash:    v.TxnHash,
 				CreateTime: v.CreatedAt.Format(time.DateTime),
 			})
 		}
 		resp.Data.Orders = vo
 	}
+	return &resp, nil
+}
+
+func (s vpnsvcService) GetServerList(ctx context.Context, in *pb.GetServerListRequest) (*pb.GetServerListResponse, error) {
+	serverList, err := services.GetServerList(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	var resp pb.GetServerListResponse
+	resp.Code = 0
+	resp.Data = &pb.GetServerListResult{
+		Servers: serverList,
+	}
+	return &resp, nil
+}
+
+func (s vpnsvcService) GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (*pb.GetServerLinkResponse, error) {
+	link, err := services.GetServerLink(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	var resp pb.GetServerLinkResponse
+	resp.Code = 0
+	resp.Data = link
 	return &resp, nil
 }

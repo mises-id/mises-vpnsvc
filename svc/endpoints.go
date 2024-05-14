@@ -38,6 +38,8 @@ type Endpoints struct {
 	VpnInfoEndpoint        endpoint.Endpoint
 	FetchOrdersEndpoint    endpoint.Endpoint
 	FetchOrderInfoEndpoint endpoint.Endpoint
+	GetServerListEndpoint  endpoint.Endpoint
+	GetServerLinkEndpoint  endpoint.Endpoint
 }
 
 // Endpoints
@@ -80,6 +82,22 @@ func (e Endpoints) FetchOrderInfo(ctx context.Context, in *pb.FetchOrderInfoRequ
 		return nil, err
 	}
 	return response.(*pb.FetchOrderInfoResponse), nil
+}
+
+func (e Endpoints) GetServerList(ctx context.Context, in *pb.GetServerListRequest) (*pb.GetServerListResponse, error) {
+	response, err := e.GetServerListEndpoint(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return response.(*pb.GetServerListResponse), nil
+}
+
+func (e Endpoints) GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (*pb.GetServerLinkResponse, error) {
+	response, err := e.GetServerLinkEndpoint(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return response.(*pb.GetServerLinkResponse), nil
 }
 
 // Make Endpoints
@@ -139,6 +157,28 @@ func MakeFetchOrderInfoEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
 	}
 }
 
+func MakeGetServerListEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(*pb.GetServerListRequest)
+		v, err := s.GetServerList(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		return v, nil
+	}
+}
+
+func MakeGetServerLinkEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(*pb.GetServerLinkRequest)
+		v, err := s.GetServerLink(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		return v, nil
+	}
+}
+
 // WrapAllExcept wraps each Endpoint field of struct Endpoints with a
 // go-kit/kit/endpoint.Middleware.
 // Use this for applying a set of middlewares to every endpoint in the service.
@@ -151,6 +191,8 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 		"VpnInfo":        {},
 		"FetchOrders":    {},
 		"FetchOrderInfo": {},
+		"GetServerList":  {},
+		"GetServerLink":  {},
 	}
 
 	for _, ex := range excluded {
@@ -176,6 +218,12 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 		if inc == "FetchOrderInfo" {
 			e.FetchOrderInfoEndpoint = middleware(e.FetchOrderInfoEndpoint)
 		}
+		if inc == "GetServerList" {
+			e.GetServerListEndpoint = middleware(e.GetServerListEndpoint)
+		}
+		if inc == "GetServerLink" {
+			e.GetServerLinkEndpoint = middleware(e.GetServerLinkEndpoint)
+		}
 	}
 }
 
@@ -195,6 +243,8 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 		"VpnInfo":        {},
 		"FetchOrders":    {},
 		"FetchOrderInfo": {},
+		"GetServerList":  {},
+		"GetServerLink":  {},
 	}
 
 	for _, ex := range excluded {
@@ -219,6 +269,12 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 		}
 		if inc == "FetchOrderInfo" {
 			e.FetchOrderInfoEndpoint = middleware("FetchOrderInfo", e.FetchOrderInfoEndpoint)
+		}
+		if inc == "GetServerList" {
+			e.GetServerListEndpoint = middleware("GetServerList", e.GetServerListEndpoint)
+		}
+		if inc == "GetServerLink" {
+			e.GetServerLinkEndpoint = middleware("GetServerLink", e.GetServerLinkEndpoint)
 		}
 	}
 }

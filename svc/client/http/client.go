@@ -101,6 +101,26 @@ func New(instance string, options ...httptransport.ClientOption) (pb.VpnsvcServe
 			options...,
 		).Endpoint()
 	}
+	var GetServerListZeroEndpoint endpoint.Endpoint
+	{
+		GetServerListZeroEndpoint = httptransport.NewClient(
+			"GET",
+			copyURL(u, "/server_list/"),
+			EncodeHTTPGetServerListZeroRequest,
+			DecodeHTTPGetServerListResponse,
+			options...,
+		).Endpoint()
+	}
+	var GetServerLinkZeroEndpoint endpoint.Endpoint
+	{
+		GetServerLinkZeroEndpoint = httptransport.NewClient(
+			"GET",
+			copyURL(u, "/server_link/"),
+			EncodeHTTPGetServerLinkZeroRequest,
+			DecodeHTTPGetServerLinkResponse,
+			options...,
+		).Endpoint()
+	}
 
 	return svc.Endpoints{
 		CreateOrderEndpoint:    CreateOrderZeroEndpoint,
@@ -108,6 +128,8 @@ func New(instance string, options ...httptransport.ClientOption) (pb.VpnsvcServe
 		VpnInfoEndpoint:        VpnInfoZeroEndpoint,
 		FetchOrdersEndpoint:    FetchOrdersZeroEndpoint,
 		FetchOrderInfoEndpoint: FetchOrderInfoZeroEndpoint,
+		GetServerListEndpoint:  GetServerListZeroEndpoint,
+		GetServerLinkEndpoint:  GetServerLinkZeroEndpoint,
 	}, nil
 }
 
@@ -262,6 +284,60 @@ func DecodeHTTPFetchOrderInfoResponse(_ context.Context, r *http.Response) (inte
 	}
 
 	var resp pb.FetchOrderInfoResponse
+	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
+		return nil, errorDecoder(buf)
+	}
+
+	return &resp, nil
+}
+
+// DecodeHTTPGetServerListResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded GetServerListResponse response from the HTTP response body.
+// If the response has a non-200 status code, we will interpret that as an
+// error and attempt to decode the specific error message from the response
+// body. Primarily useful in a client.
+func DecodeHTTPGetServerListResponse(_ context.Context, r *http.Response) (interface{}, error) {
+	defer r.Body.Close()
+	buf, err := ioutil.ReadAll(r.Body)
+	if err == io.EOF {
+		return nil, errors.New("response http body empty")
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot read http body")
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, errors.Wrapf(errorDecoder(buf), "status code: '%d'", r.StatusCode)
+	}
+
+	var resp pb.GetServerListResponse
+	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
+		return nil, errorDecoder(buf)
+	}
+
+	return &resp, nil
+}
+
+// DecodeHTTPGetServerLinkResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded GetServerLinkResponse response from the HTTP response body.
+// If the response has a non-200 status code, we will interpret that as an
+// error and attempt to decode the specific error message from the response
+// body. Primarily useful in a client.
+func DecodeHTTPGetServerLinkResponse(_ context.Context, r *http.Response) (interface{}, error) {
+	defer r.Body.Close()
+	buf, err := ioutil.ReadAll(r.Body)
+	if err == io.EOF {
+		return nil, errors.New("response http body empty")
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot read http body")
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, errors.Wrapf(errorDecoder(buf), "status code: '%d'", r.StatusCode)
+	}
+
+	var resp pb.GetServerLinkResponse
 	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
 		return nil, errorDecoder(buf)
 	}
@@ -685,6 +761,152 @@ func EncodeHTTPFetchOrderInfoOneRequest(_ context.Context, r *http.Request, requ
 	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
 
 	values.Add("orderId", fmt.Sprint(req.OrderId))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetServerListZeroRequest is a transport/http.EncodeRequestFunc
+// that encodes a getserverlist request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetServerListZeroRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetServerListRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"server_list",
+		"",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetServerListOneRequest is a transport/http.EncodeRequestFunc
+// that encodes a getserverlist request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetServerListOneRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetServerListRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"server_list",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetServerLinkZeroRequest is a transport/http.EncodeRequestFunc
+// that encodes a getserverlink request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetServerLinkZeroRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetServerLinkRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"server_link",
+		"",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
+
+	values.Add("server", fmt.Sprint(req.Server))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetServerLinkOneRequest is a transport/http.EncodeRequestFunc
+// that encodes a getserverlink request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetServerLinkOneRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetServerLinkRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"server_link",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
+
+	values.Add("server", fmt.Sprint(req.Server))
 
 	r.URL.RawQuery = values.Encode()
 	return nil

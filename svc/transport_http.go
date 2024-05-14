@@ -122,6 +122,32 @@ func MakeHTTPHandler(endpoints Endpoints, responseEncoder httptransport.EncodeRe
 		responseEncoder,
 		serverOptions...,
 	))
+
+	m.Methods("GET").Path("/server_list/").Handler(httptransport.NewServer(
+		endpoints.GetServerListEndpoint,
+		DecodeHTTPGetServerListZeroRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+	m.Methods("GET").Path("/server_list").Handler(httptransport.NewServer(
+		endpoints.GetServerListEndpoint,
+		DecodeHTTPGetServerListOneRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+
+	m.Methods("GET").Path("/server_link/").Handler(httptransport.NewServer(
+		endpoints.GetServerLinkEndpoint,
+		DecodeHTTPGetServerLinkZeroRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+	m.Methods("GET").Path("/server_link").Handler(httptransport.NewServer(
+		endpoints.GetServerLinkEndpoint,
+		DecodeHTTPGetServerLinkOneRequest,
+		responseEncoder,
+		serverOptions...,
+	))
 	return m
 }
 
@@ -578,6 +604,186 @@ func DecodeHTTPFetchOrderInfoOneRequest(_ context.Context, r *http.Request) (int
 		OrderIdFetchOrderInfoStr := OrderIdFetchOrderInfoStrArr[0]
 		OrderIdFetchOrderInfo := OrderIdFetchOrderInfoStr
 		req.OrderId = OrderIdFetchOrderInfo
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPGetServerListZeroRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getserverlist request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetServerListZeroRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetServerListRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EthAddressGetServerListStrArr, ok := queryParams["ethAddress"]; ok {
+		EthAddressGetServerListStr := EthAddressGetServerListStrArr[0]
+		EthAddressGetServerList := EthAddressGetServerListStr
+		req.EthAddress = EthAddressGetServerList
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPGetServerListOneRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getserverlist request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetServerListOneRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetServerListRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EthAddressGetServerListStrArr, ok := queryParams["ethAddress"]; ok {
+		EthAddressGetServerListStr := EthAddressGetServerListStrArr[0]
+		EthAddressGetServerList := EthAddressGetServerListStr
+		req.EthAddress = EthAddressGetServerList
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPGetServerLinkZeroRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getserverlink request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetServerLinkZeroRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetServerLinkRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EthAddressGetServerLinkStrArr, ok := queryParams["ethAddress"]; ok {
+		EthAddressGetServerLinkStr := EthAddressGetServerLinkStrArr[0]
+		EthAddressGetServerLink := EthAddressGetServerLinkStr
+		req.EthAddress = EthAddressGetServerLink
+	}
+
+	if ServerGetServerLinkStrArr, ok := queryParams["server"]; ok {
+		ServerGetServerLinkStr := ServerGetServerLinkStrArr[0]
+		ServerGetServerLink := ServerGetServerLinkStr
+		req.Server = ServerGetServerLink
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPGetServerLinkOneRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getserverlink request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetServerLinkOneRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetServerLinkRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EthAddressGetServerLinkStrArr, ok := queryParams["ethAddress"]; ok {
+		EthAddressGetServerLinkStr := EthAddressGetServerLinkStrArr[0]
+		EthAddressGetServerLink := EthAddressGetServerLinkStr
+		req.EthAddress = EthAddressGetServerLink
+	}
+
+	if ServerGetServerLinkStrArr, ok := queryParams["server"]; ok {
+		ServerGetServerLinkStr := ServerGetServerLinkStrArr[0]
+		ServerGetServerLink := ServerGetServerLinkStr
+		req.Server = ServerGetServerLink
 	}
 
 	return &req, err

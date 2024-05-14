@@ -66,6 +66,54 @@ rpc FetchOrderInfo (FetchOrderInfoRequest) returns (FetchOrderInfoResponse) {
   };
 }
 
+rpc GetServerList (GetServerListRequest) returns (GetServerListResponse) {
+  option (google.api.http) = {
+    get: "/server_list"
+    additional_bindings {
+      get: "/server_list/"
+    }
+  };
+}
+
+rpc GetServerLink (GetServerLinkRequest) returns (GetServerLinkResponse) {
+  option (google.api.http) = {
+    get: "/server_link"
+    additional_bindings {
+      get: "/server_link/"
+    }
+  };
+}
+
+}
+
+message GetServerListRequest {
+    string ethAddress = 1;
+}
+
+message GetServerListItem {
+    string ip = 1;
+    string name = 2;
+}
+
+message GetServerListResult {
+    repeated GetServerListItem servers = 1;
+}
+
+message GetServerListResponse {
+    uint64 code = 1;
+    GetServerListResult data = 2;
+    string error = 3;
+}
+
+message GetServerLinkRequest {
+    string ethAddress = 1;
+    string server = 2;
+}
+
+message GetServerLinkResponse {
+    uint64 code = 1;
+    string data = 2;
+    string error = 3;
 }
 
 message VpnInfoRequest {

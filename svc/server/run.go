@@ -58,6 +58,8 @@ func NewEndpoints(service pb.VpnsvcServer) svc.Endpoints {
 		vpninfoEndpoint        = svc.MakeVpnInfoEndpoint(service)
 		fetchordersEndpoint    = svc.MakeFetchOrdersEndpoint(service)
 		fetchorderinfoEndpoint = svc.MakeFetchOrderInfoEndpoint(service)
+		getserverlistEndpoint  = svc.MakeGetServerListEndpoint(service)
+		getserverlinkEndpoint  = svc.MakeGetServerLinkEndpoint(service)
 	)
 
 	endpoints := svc.Endpoints{
@@ -66,6 +68,8 @@ func NewEndpoints(service pb.VpnsvcServer) svc.Endpoints {
 		VpnInfoEndpoint:        vpninfoEndpoint,
 		FetchOrdersEndpoint:    fetchordersEndpoint,
 		FetchOrderInfoEndpoint: fetchorderinfoEndpoint,
+		GetServerListEndpoint:  getserverlistEndpoint,
+		GetServerLinkEndpoint:  getserverlinkEndpoint,
 	}
 
 	// Wrap selected Endpoints with middlewares. See handlers/middlewares.go
