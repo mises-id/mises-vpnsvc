@@ -7,6 +7,7 @@ import (
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
 	"github.com/mises-id/mises-vpnsvc/app/services"
 	pb "github.com/mises-id/mises-vpnsvc/proto"
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
@@ -177,6 +178,7 @@ func (s vpnsvcService) FetchOrders(ctx context.Context, in *pb.FetchOrdersReques
 func (s vpnsvcService) GetServerList(ctx context.Context, in *pb.GetServerListRequest) (*pb.GetServerListResponse, error) {
 	serverList, err := services.GetServerList(ctx, in)
 	if err != nil {
+		logrus.Error("GetServerList error:", err)
 		return nil, err
 	}
 	var resp pb.GetServerListResponse
@@ -190,6 +192,7 @@ func (s vpnsvcService) GetServerList(ctx context.Context, in *pb.GetServerListRe
 func (s vpnsvcService) GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (*pb.GetServerLinkResponse, error) {
 	link, err := services.GetServerLink(ctx, in)
 	if err != nil {
+		logrus.Error("GetServerLink error:", err)
 		return nil, err
 	}
 	var resp pb.GetServerLinkResponse
