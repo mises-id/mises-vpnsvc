@@ -17,9 +17,14 @@ var (
 			Ip:   "34.230.112.190",
 			Name: "Mises Test",
 		},
+		{
+			Ip:   "52.204.164.56",
+			Name: "Mises Build",
+		},
 	}
 	ServerAddressList = map[string]struct{}{
 		"34.230.112.190": {},
+		"52.204.164.56": {},
 	}
 )
 
