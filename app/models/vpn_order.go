@@ -182,7 +182,6 @@ func FindVpnOrdersByMisesID(ctx context.Context, misesId string) ([]*VpnOrder, e
 }
 
 func (u *VpnOrder) UpdateOrderOnPayById(ctx context.Context) error {
-	// todo: 更新链上数据到db
 	update := bson.M{}
 	update["txn_hash"] = u.TxnHash
 	update["status"] = u.Status
