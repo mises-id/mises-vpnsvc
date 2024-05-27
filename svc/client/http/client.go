@@ -1020,7 +1020,7 @@ func EncodeHTTPVerifyOrderFromChainZeroRequest(_ context.Context, r *http.Reques
 
 	values.Add("chain", fmt.Sprint(req.Chain))
 
-	values.Add("startTime", fmt.Sprint(req.StartTime))
+	values.Add("startBlock", fmt.Sprint(req.StartBlock))
 
 	r.URL.RawQuery = values.Encode()
 	return nil
@@ -1057,7 +1057,7 @@ func EncodeHTTPVerifyOrderFromChainOneRequest(_ context.Context, r *http.Request
 
 	values.Add("chain", fmt.Sprint(req.Chain))
 
-	values.Add("startTime", fmt.Sprint(req.StartTime))
+	values.Add("startBlock", fmt.Sprint(req.StartBlock))
 
 	r.URL.RawQuery = values.Encode()
 	return nil

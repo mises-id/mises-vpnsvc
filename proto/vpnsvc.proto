@@ -115,7 +115,7 @@ message CleanExpiredVpnLinkResponse {
 
 message VerifyOrderFromChainRequest {
     string chain = 1;
-    int64 startTime = 2;
+    int64 startBlock = 2;
 }
 
 message VerifyOrderFromChainResponse {

@@ -6,6 +6,6 @@ func NewTronTestNet() *TronTestNet {
 	return &TronTestNet{}
 }
 
-func (*TronTestNet) VerifyOrders (startTime int64) error {
+func (*TronTestNet) VerifyOrders (startBlock int64) error {
 	return nil
 }

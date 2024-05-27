@@ -854,13 +854,13 @@ func DecodeHTTPVerifyOrderFromChainZeroRequest(_ context.Context, r *http.Reques
 		req.Chain = ChainVerifyOrderFromChain
 	}
 
-	if StartTimeVerifyOrderFromChainStrArr, ok := queryParams["startTime"]; ok {
-		StartTimeVerifyOrderFromChainStr := StartTimeVerifyOrderFromChainStrArr[0]
-		StartTimeVerifyOrderFromChain, err := strconv.ParseInt(StartTimeVerifyOrderFromChainStr, 10, 64)
+	if StartBlockVerifyOrderFromChainStrArr, ok := queryParams["startBlock"]; ok {
+		StartBlockVerifyOrderFromChainStr := StartBlockVerifyOrderFromChainStrArr[0]
+		StartBlockVerifyOrderFromChain, err := strconv.ParseInt(StartBlockVerifyOrderFromChainStr, 10, 64)
 		if err != nil {
-			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartTimeVerifyOrderFromChain from query, queryParams: %v", queryParams))
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartBlockVerifyOrderFromChain from query, queryParams: %v", queryParams))
 		}
-		req.StartTime = StartTimeVerifyOrderFromChain
+		req.StartBlock = StartBlockVerifyOrderFromChain
 	}
 
 	return &req, err
@@ -905,13 +905,13 @@ func DecodeHTTPVerifyOrderFromChainOneRequest(_ context.Context, r *http.Request
 		req.Chain = ChainVerifyOrderFromChain
 	}
 
-	if StartTimeVerifyOrderFromChainStrArr, ok := queryParams["startTime"]; ok {
-		StartTimeVerifyOrderFromChainStr := StartTimeVerifyOrderFromChainStrArr[0]
-		StartTimeVerifyOrderFromChain, err := strconv.ParseInt(StartTimeVerifyOrderFromChainStr, 10, 64)
+	if StartBlockVerifyOrderFromChainStrArr, ok := queryParams["startBlock"]; ok {
+		StartBlockVerifyOrderFromChainStr := StartBlockVerifyOrderFromChainStrArr[0]
+		StartBlockVerifyOrderFromChain, err := strconv.ParseInt(StartBlockVerifyOrderFromChainStr, 10, 64)
 		if err != nil {
-			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartTimeVerifyOrderFromChain from query, queryParams: %v", queryParams))
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartBlockVerifyOrderFromChain from query, queryParams: %v", queryParams))
 		}
-		req.StartTime = StartTimeVerifyOrderFromChain
+		req.StartBlock = StartBlockVerifyOrderFromChain
 	}
 
 	return &req, err

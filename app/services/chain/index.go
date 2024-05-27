@@ -7,7 +7,7 @@ import (
 )
 
 type Chain interface {
-	VerifyOrders(startTime int64) error
+	VerifyOrders(startBlock int64) error
 }
 
 func NewChain(chainName string) (Chain, error) {
@@ -30,5 +30,5 @@ func VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOrderFromChainReques
 	if err != nil {
 		return err
 	}
-	return c.VerifyOrders(in.StartTime)
+	return c.VerifyOrders(in.StartBlock)
 }

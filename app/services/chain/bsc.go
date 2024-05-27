@@ -6,6 +6,6 @@ func NewBsc() *Bsc {
 	return &Bsc{}
 }
 
-func (*Bsc) VerifyOrders (startTime int64) error {
+func (*Bsc) VerifyOrders (startBlock int64) error {
 	return nil
 }

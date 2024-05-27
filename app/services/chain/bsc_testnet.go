@@ -6,6 +6,6 @@ func NewBscTestNet() *BscTestNet {
 	return &BscTestNet{}
 }
 
-func (*BscTestNet) VerifyOrders (startTime int64) error {
+func (*BscTestNet) VerifyOrders (startBlock int64) error {
 	return nil
 }

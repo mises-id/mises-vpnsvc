@@ -6,6 +6,6 @@ func NewTron() *Tron {
 	return &Tron{}
 }
 
-func (*Tron) VerifyOrders (startTime int64) error {
+func (*Tron) VerifyOrders (startBlock int64) error {
 	return nil
 }
