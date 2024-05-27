@@ -84,6 +84,43 @@ rpc GetServerLink (GetServerLinkRequest) returns (GetServerLinkResponse) {
   };
 }
 
+rpc VerifyOrderFromChain (VerifyOrderFromChainRequest) returns (VerifyOrderFromChainResponse) {
+  option (google.api.http) = {
+    get: "/sync_order_from_chain"
+    additional_bindings {
+      get: "/sync_order_from_chain/"
+    }
+  };
+}
+
+rpc CleanExpiredVpnLink (CleanExpiredVpnLinkRequest) returns (CleanExpiredVpnLinkResponse) {
+  option (google.api.http) = {
+    get: "/clean_expired_vpn_link"
+    additional_bindings {
+      get: "/clean_expired_vpn_link/"
+    }
+  };
+}
+
+}
+
+message CleanExpiredVpnLinkRequest {
+    int64 endTime = 1;
+}
+
+message CleanExpiredVpnLinkResponse {
+    uint64 code = 1;
+    string error = 2;
+}
+
+message VerifyOrderFromChainRequest {
+    string chain = 1;
+    int64 startTime = 2;
+}
+
+message VerifyOrderFromChainResponse {
+    uint64 code = 1;
+    string error = 2;
 }
 
 message GetServerListRequest {

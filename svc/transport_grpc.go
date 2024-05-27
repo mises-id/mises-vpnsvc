@@ -71,18 +71,32 @@ func MakeGRPCServer(endpoints Endpoints, options ...grpctransport.ServerOption) 
 			EncodeGRPCGetServerLinkResponse,
 			serverOptions...,
 		),
+		verifyorderfromchain: grpctransport.NewServer(
+			endpoints.VerifyOrderFromChainEndpoint,
+			DecodeGRPCVerifyOrderFromChainRequest,
+			EncodeGRPCVerifyOrderFromChainResponse,
+			serverOptions...,
+		),
+		cleanexpiredvpnlink: grpctransport.NewServer(
+			endpoints.CleanExpiredVpnLinkEndpoint,
+			DecodeGRPCCleanExpiredVpnLinkRequest,
+			EncodeGRPCCleanExpiredVpnLinkResponse,
+			serverOptions...,
+		),
 	}
 }
 
 // grpcServer implements the VpnsvcServer interface
 type grpcServer struct {
-	createorder    grpctransport.Handler
-	updateorder    grpctransport.Handler
-	vpninfo        grpctransport.Handler
-	fetchorders    grpctransport.Handler
-	fetchorderinfo grpctransport.Handler
-	getserverlist  grpctransport.Handler
-	getserverlink  grpctransport.Handler
+	createorder          grpctransport.Handler
+	updateorder          grpctransport.Handler
+	vpninfo              grpctransport.Handler
+	fetchorders          grpctransport.Handler
+	fetchorderinfo       grpctransport.Handler
+	getserverlist        grpctransport.Handler
+	getserverlink        grpctransport.Handler
+	verifyorderfromchain grpctransport.Handler
+	cleanexpiredvpnlink  grpctransport.Handler
 }
 
 // Methods for grpcServer to implement VpnsvcServer interface
@@ -143,6 +157,22 @@ func (s *grpcServer) GetServerLink(ctx context.Context, req *pb.GetServerLinkReq
 	return rep.(*pb.GetServerLinkResponse), nil
 }
 
+func (s *grpcServer) VerifyOrderFromChain(ctx context.Context, req *pb.VerifyOrderFromChainRequest) (*pb.VerifyOrderFromChainResponse, error) {
+	_, rep, err := s.verifyorderfromchain.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return rep.(*pb.VerifyOrderFromChainResponse), nil
+}
+
+func (s *grpcServer) CleanExpiredVpnLink(ctx context.Context, req *pb.CleanExpiredVpnLinkRequest) (*pb.CleanExpiredVpnLinkResponse, error) {
+	_, rep, err := s.cleanexpiredvpnlink.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return rep.(*pb.CleanExpiredVpnLinkResponse), nil
+}
+
 // Server Decode
 
 // DecodeGRPCCreateOrderRequest is a transport/grpc.DecodeRequestFunc that converts a
@@ -194,6 +224,20 @@ func DecodeGRPCGetServerLinkRequest(_ context.Context, grpcReq interface{}) (int
 	return req, nil
 }
 
+// DecodeGRPCVerifyOrderFromChainRequest is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC verifyorderfromchain request to a user-domain verifyorderfromchain request. Primarily useful in a server.
+func DecodeGRPCVerifyOrderFromChainRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
+	req := grpcReq.(*pb.VerifyOrderFromChainRequest)
+	return req, nil
+}
+
+// DecodeGRPCCleanExpiredVpnLinkRequest is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC cleanexpiredvpnlink request to a user-domain cleanexpiredvpnlink request. Primarily useful in a server.
+func DecodeGRPCCleanExpiredVpnLinkRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
+	req := grpcReq.(*pb.CleanExpiredVpnLinkRequest)
+	return req, nil
+}
+
 // Server Encode
 
 // EncodeGRPCCreateOrderResponse is a transport/grpc.EncodeResponseFunc that converts a
@@ -242,6 +286,20 @@ func EncodeGRPCGetServerListResponse(_ context.Context, response interface{}) (i
 // user-domain getserverlink response to a gRPC getserverlink reply. Primarily useful in a server.
 func EncodeGRPCGetServerLinkResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(*pb.GetServerLinkResponse)
+	return resp, nil
+}
+
+// EncodeGRPCVerifyOrderFromChainResponse is a transport/grpc.EncodeResponseFunc that converts a
+// user-domain verifyorderfromchain response to a gRPC verifyorderfromchain reply. Primarily useful in a server.
+func EncodeGRPCVerifyOrderFromChainResponse(_ context.Context, response interface{}) (interface{}, error) {
+	resp := response.(*pb.VerifyOrderFromChainResponse)
+	return resp, nil
+}
+
+// EncodeGRPCCleanExpiredVpnLinkResponse is a transport/grpc.EncodeResponseFunc that converts a
+// user-domain cleanexpiredvpnlink response to a gRPC cleanexpiredvpnlink reply. Primarily useful in a server.
+func EncodeGRPCCleanExpiredVpnLinkResponse(_ context.Context, response interface{}) (interface{}, error) {
+	resp := response.(*pb.CleanExpiredVpnLinkResponse)
 	return resp, nil
 }
 

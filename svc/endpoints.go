@@ -33,13 +33,15 @@ import (
 // single type that implements the Service interface. For example, you might
 // construct individual endpoints using transport/http.NewClient, combine them into an Endpoints, and return it to the caller as a Service.
 type Endpoints struct {
-	CreateOrderEndpoint    endpoint.Endpoint
-	UpdateOrderEndpoint    endpoint.Endpoint
-	VpnInfoEndpoint        endpoint.Endpoint
-	FetchOrdersEndpoint    endpoint.Endpoint
-	FetchOrderInfoEndpoint endpoint.Endpoint
-	GetServerListEndpoint  endpoint.Endpoint
-	GetServerLinkEndpoint  endpoint.Endpoint
+	CreateOrderEndpoint          endpoint.Endpoint
+	UpdateOrderEndpoint          endpoint.Endpoint
+	VpnInfoEndpoint              endpoint.Endpoint
+	FetchOrdersEndpoint          endpoint.Endpoint
+	FetchOrderInfoEndpoint       endpoint.Endpoint
+	GetServerListEndpoint        endpoint.Endpoint
+	GetServerLinkEndpoint        endpoint.Endpoint
+	VerifyOrderFromChainEndpoint endpoint.Endpoint
+	CleanExpiredVpnLinkEndpoint  endpoint.Endpoint
 }
 
 // Endpoints
@@ -98,6 +100,22 @@ func (e Endpoints) GetServerLink(ctx context.Context, in *pb.GetServerLinkReques
 		return nil, err
 	}
 	return response.(*pb.GetServerLinkResponse), nil
+}
+
+func (e Endpoints) VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOrderFromChainRequest) (*pb.VerifyOrderFromChainResponse, error) {
+	response, err := e.VerifyOrderFromChainEndpoint(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return response.(*pb.VerifyOrderFromChainResponse), nil
+}
+
+func (e Endpoints) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest) (*pb.CleanExpiredVpnLinkResponse, error) {
+	response, err := e.CleanExpiredVpnLinkEndpoint(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return response.(*pb.CleanExpiredVpnLinkResponse), nil
 }
 
 // Make Endpoints
@@ -179,6 +197,28 @@ func MakeGetServerLinkEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
 	}
 }
 
+func MakeVerifyOrderFromChainEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(*pb.VerifyOrderFromChainRequest)
+		v, err := s.VerifyOrderFromChain(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		return v, nil
+	}
+}
+
+func MakeCleanExpiredVpnLinkEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(*pb.CleanExpiredVpnLinkRequest)
+		v, err := s.CleanExpiredVpnLink(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		return v, nil
+	}
+}
+
 // WrapAllExcept wraps each Endpoint field of struct Endpoints with a
 // go-kit/kit/endpoint.Middleware.
 // Use this for applying a set of middlewares to every endpoint in the service.
@@ -186,13 +226,15 @@ func MakeGetServerLinkEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
 // WrapAllExcept(middleware, "Status", "Ping")
 func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...string) {
 	included := map[string]struct{}{
-		"CreateOrder":    {},
-		"UpdateOrder":    {},
-		"VpnInfo":        {},
-		"FetchOrders":    {},
-		"FetchOrderInfo": {},
-		"GetServerList":  {},
-		"GetServerLink":  {},
+		"CreateOrder":          {},
+		"UpdateOrder":          {},
+		"VpnInfo":              {},
+		"FetchOrders":          {},
+		"FetchOrderInfo":       {},
+		"GetServerList":        {},
+		"GetServerLink":        {},
+		"VerifyOrderFromChain": {},
+		"CleanExpiredVpnLink":  {},
 	}
 
 	for _, ex := range excluded {
@@ -224,6 +266,12 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 		if inc == "GetServerLink" {
 			e.GetServerLinkEndpoint = middleware(e.GetServerLinkEndpoint)
 		}
+		if inc == "VerifyOrderFromChain" {
+			e.VerifyOrderFromChainEndpoint = middleware(e.VerifyOrderFromChainEndpoint)
+		}
+		if inc == "CleanExpiredVpnLink" {
+			e.CleanExpiredVpnLinkEndpoint = middleware(e.CleanExpiredVpnLinkEndpoint)
+		}
 	}
 }
 
@@ -238,13 +286,15 @@ type LabeledMiddleware func(string, endpoint.Endpoint) endpoint.Endpoint
 // functionality.
 func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoint) endpoint.Endpoint, excluded ...string) {
 	included := map[string]struct{}{
-		"CreateOrder":    {},
-		"UpdateOrder":    {},
-		"VpnInfo":        {},
-		"FetchOrders":    {},
-		"FetchOrderInfo": {},
-		"GetServerList":  {},
-		"GetServerLink":  {},
+		"CreateOrder":          {},
+		"UpdateOrder":          {},
+		"VpnInfo":              {},
+		"FetchOrders":          {},
+		"FetchOrderInfo":       {},
+		"GetServerList":        {},
+		"GetServerLink":        {},
+		"VerifyOrderFromChain": {},
+		"CleanExpiredVpnLink":  {},
 	}
 
 	for _, ex := range excluded {
@@ -275,6 +325,12 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 		}
 		if inc == "GetServerLink" {
 			e.GetServerLinkEndpoint = middleware("GetServerLink", e.GetServerLinkEndpoint)
+		}
+		if inc == "VerifyOrderFromChain" {
+			e.VerifyOrderFromChainEndpoint = middleware("VerifyOrderFromChain", e.VerifyOrderFromChainEndpoint)
+		}
+		if inc == "CleanExpiredVpnLink" {
+			e.CleanExpiredVpnLinkEndpoint = middleware("CleanExpiredVpnLink", e.CleanExpiredVpnLinkEndpoint)
 		}
 	}
 }

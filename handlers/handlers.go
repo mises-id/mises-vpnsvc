@@ -6,7 +6,9 @@ import (
 	"github.com/mises-id/mises-vpnsvc/app/models"
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
 	"github.com/mises-id/mises-vpnsvc/app/services"
+	"github.com/mises-id/mises-vpnsvc/app/services/chain"
 	pb "github.com/mises-id/mises-vpnsvc/proto"
+	"github.com/mises-id/mises-vpnsvc/lib/utils"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
@@ -20,11 +22,16 @@ func NewService() pb.VpnsvcServer {
 type vpnsvcService struct{}
 
 func (s vpnsvcService) UpdateOrder(ctx context.Context, in *pb.UpdateOrderRequest) (*pb.UpdateOrderResponse, error) {
-	// todo: 校验order数据
 
-	// todo: 从链上取数据并校验金额
+	if !utils.IsEthAddress(in.EthAddress) || in.OrderId == "" || in.TxnHash == "" {
+		return nil, errors.New("param error")
+	}
 
-	if err := services.UpdateOrderAndAccount(ctx, in); err != nil {
+	//if err := services.UpdateOrderAndAccount(ctx, in); err != nil {
+	//	return nil, err
+	//}
+
+	if err := services.UpdateOrderOnPending(ctx, in); err != nil {
 		return nil, err
 	}
 
@@ -198,5 +205,20 @@ func (s vpnsvcService) GetServerLink(ctx context.Context, in *pb.GetServerLinkRe
 	var resp pb.GetServerLinkResponse
 	resp.Code = 0
 	resp.Data = link
+	return &resp, nil
+}
+
+func (s vpnsvcService) VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOrderFromChainRequest) (*pb.VerifyOrderFromChainResponse, error) {
+	if err := chain.VerifyOrderFromChain(ctx, in); err != nil {
+		logrus.Error("VerifyOrderFromChain error:", err)
+		return nil, err
+	}
+	var resp pb.VerifyOrderFromChainResponse
+	resp.Code = 0
+	return &resp, nil
+}
+
+func (s vpnsvcService) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest) (*pb.CleanExpiredVpnLinkResponse, error) {
+	var resp pb.CleanExpiredVpnLinkResponse
 	return &resp, nil
 }

@@ -53,23 +53,27 @@ func NewEndpoints(service pb.VpnsvcServer) svc.Endpoints {
 
 	// Endpoint domain.
 	var (
-		createorderEndpoint    = svc.MakeCreateOrderEndpoint(service)
-		updateorderEndpoint    = svc.MakeUpdateOrderEndpoint(service)
-		vpninfoEndpoint        = svc.MakeVpnInfoEndpoint(service)
-		fetchordersEndpoint    = svc.MakeFetchOrdersEndpoint(service)
-		fetchorderinfoEndpoint = svc.MakeFetchOrderInfoEndpoint(service)
-		getserverlistEndpoint  = svc.MakeGetServerListEndpoint(service)
-		getserverlinkEndpoint  = svc.MakeGetServerLinkEndpoint(service)
+		createorderEndpoint          = svc.MakeCreateOrderEndpoint(service)
+		updateorderEndpoint          = svc.MakeUpdateOrderEndpoint(service)
+		vpninfoEndpoint              = svc.MakeVpnInfoEndpoint(service)
+		fetchordersEndpoint          = svc.MakeFetchOrdersEndpoint(service)
+		fetchorderinfoEndpoint       = svc.MakeFetchOrderInfoEndpoint(service)
+		getserverlistEndpoint        = svc.MakeGetServerListEndpoint(service)
+		getserverlinkEndpoint        = svc.MakeGetServerLinkEndpoint(service)
+		verifyorderfromchainEndpoint = svc.MakeVerifyOrderFromChainEndpoint(service)
+		cleanexpiredvpnlinkEndpoint  = svc.MakeCleanExpiredVpnLinkEndpoint(service)
 	)
 
 	endpoints := svc.Endpoints{
-		CreateOrderEndpoint:    createorderEndpoint,
-		UpdateOrderEndpoint:    updateorderEndpoint,
-		VpnInfoEndpoint:        vpninfoEndpoint,
-		FetchOrdersEndpoint:    fetchordersEndpoint,
-		FetchOrderInfoEndpoint: fetchorderinfoEndpoint,
-		GetServerListEndpoint:  getserverlistEndpoint,
-		GetServerLinkEndpoint:  getserverlinkEndpoint,
+		CreateOrderEndpoint:          createorderEndpoint,
+		UpdateOrderEndpoint:          updateorderEndpoint,
+		VpnInfoEndpoint:              vpninfoEndpoint,
+		FetchOrdersEndpoint:          fetchordersEndpoint,
+		FetchOrderInfoEndpoint:       fetchorderinfoEndpoint,
+		GetServerListEndpoint:        getserverlistEndpoint,
+		GetServerLinkEndpoint:        getserverlinkEndpoint,
+		VerifyOrderFromChainEndpoint: verifyorderfromchainEndpoint,
+		CleanExpiredVpnLinkEndpoint:  cleanexpiredvpnlinkEndpoint,
 	}
 
 	// Wrap selected Endpoints with middlewares. See handlers/middlewares.go

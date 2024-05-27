@@ -187,6 +187,21 @@ func (u *VpnOrder) UpdateOrderOnPayById(ctx context.Context) error {
 	update["txn_hash"] = u.TxnHash
 	update["status"] = u.Status
 	update["order_at"] = u.OrderAt
+	currentStatus := []enum.VpnOrderStatus{enum.VpnOrderInit, enum.VpnOrderPending}
+	ret, err := db.DB().Collection("vpnorder").UpdateOne(ctx, &bson.M{"_id": u.ID, "misesid": u.MisesID, "status": bson.M{"$in": currentStatus}}, bson.D{{Key: "$set", Value: update}})
+	if err != nil {
+		return err
+	}
+	if ret.ModifiedCount == 0 {
+		return errors.New("update order error")
+	}
+	return nil
+}
+
+func (u *VpnOrder) UpdateOrderOnPendingById(ctx context.Context) error {
+	update := bson.M{}
+	update["txn_hash"] = u.TxnHash
+	update["status"] = u.Status
 	ret, err := db.DB().Collection("vpnorder").UpdateOne(ctx, &bson.M{"_id": u.ID, "misesid": u.MisesID, "status": enum.VpnOrderInit}, bson.D{{Key: "$set", Value: update}})
 	if err != nil {
 		return err

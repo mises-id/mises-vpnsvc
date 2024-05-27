@@ -148,6 +148,32 @@ func MakeHTTPHandler(endpoints Endpoints, responseEncoder httptransport.EncodeRe
 		responseEncoder,
 		serverOptions...,
 	))
+
+	m.Methods("GET").Path("/sync_order_from_chain/").Handler(httptransport.NewServer(
+		endpoints.VerifyOrderFromChainEndpoint,
+		DecodeHTTPVerifyOrderFromChainZeroRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+	m.Methods("GET").Path("/sync_order_from_chain").Handler(httptransport.NewServer(
+		endpoints.VerifyOrderFromChainEndpoint,
+		DecodeHTTPVerifyOrderFromChainOneRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+
+	m.Methods("GET").Path("/clean_expired_vpn_link/").Handler(httptransport.NewServer(
+		endpoints.CleanExpiredVpnLinkEndpoint,
+		DecodeHTTPCleanExpiredVpnLinkZeroRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+	m.Methods("GET").Path("/clean_expired_vpn_link").Handler(httptransport.NewServer(
+		endpoints.CleanExpiredVpnLinkEndpoint,
+		DecodeHTTPCleanExpiredVpnLinkOneRequest,
+		responseEncoder,
+		serverOptions...,
+	))
 	return m
 }
 
@@ -784,6 +810,198 @@ func DecodeHTTPGetServerLinkOneRequest(_ context.Context, r *http.Request) (inte
 		ServerGetServerLinkStr := ServerGetServerLinkStrArr[0]
 		ServerGetServerLink := ServerGetServerLinkStr
 		req.Server = ServerGetServerLink
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPVerifyOrderFromChainZeroRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded verifyorderfromchain request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPVerifyOrderFromChainZeroRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.VerifyOrderFromChainRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if ChainVerifyOrderFromChainStrArr, ok := queryParams["chain"]; ok {
+		ChainVerifyOrderFromChainStr := ChainVerifyOrderFromChainStrArr[0]
+		ChainVerifyOrderFromChain := ChainVerifyOrderFromChainStr
+		req.Chain = ChainVerifyOrderFromChain
+	}
+
+	if StartTimeVerifyOrderFromChainStrArr, ok := queryParams["startTime"]; ok {
+		StartTimeVerifyOrderFromChainStr := StartTimeVerifyOrderFromChainStrArr[0]
+		StartTimeVerifyOrderFromChain, err := strconv.ParseInt(StartTimeVerifyOrderFromChainStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartTimeVerifyOrderFromChain from query, queryParams: %v", queryParams))
+		}
+		req.StartTime = StartTimeVerifyOrderFromChain
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPVerifyOrderFromChainOneRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded verifyorderfromchain request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPVerifyOrderFromChainOneRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.VerifyOrderFromChainRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if ChainVerifyOrderFromChainStrArr, ok := queryParams["chain"]; ok {
+		ChainVerifyOrderFromChainStr := ChainVerifyOrderFromChainStrArr[0]
+		ChainVerifyOrderFromChain := ChainVerifyOrderFromChainStr
+		req.Chain = ChainVerifyOrderFromChain
+	}
+
+	if StartTimeVerifyOrderFromChainStrArr, ok := queryParams["startTime"]; ok {
+		StartTimeVerifyOrderFromChainStr := StartTimeVerifyOrderFromChainStrArr[0]
+		StartTimeVerifyOrderFromChain, err := strconv.ParseInt(StartTimeVerifyOrderFromChainStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting StartTimeVerifyOrderFromChain from query, queryParams: %v", queryParams))
+		}
+		req.StartTime = StartTimeVerifyOrderFromChain
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPCleanExpiredVpnLinkZeroRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded cleanexpiredvpnlink request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPCleanExpiredVpnLinkZeroRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.CleanExpiredVpnLinkRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EndTimeCleanExpiredVpnLinkStrArr, ok := queryParams["endTime"]; ok {
+		EndTimeCleanExpiredVpnLinkStr := EndTimeCleanExpiredVpnLinkStrArr[0]
+		EndTimeCleanExpiredVpnLink, err := strconv.ParseInt(EndTimeCleanExpiredVpnLinkStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting EndTimeCleanExpiredVpnLink from query, queryParams: %v", queryParams))
+		}
+		req.EndTime = EndTimeCleanExpiredVpnLink
+	}
+
+	return &req, err
+}
+
+// DecodeHTTPCleanExpiredVpnLinkOneRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded cleanexpiredvpnlink request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPCleanExpiredVpnLinkOneRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.CleanExpiredVpnLinkRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	if EndTimeCleanExpiredVpnLinkStrArr, ok := queryParams["endTime"]; ok {
+		EndTimeCleanExpiredVpnLinkStr := EndTimeCleanExpiredVpnLinkStrArr[0]
+		EndTimeCleanExpiredVpnLink, err := strconv.ParseInt(EndTimeCleanExpiredVpnLinkStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting EndTimeCleanExpiredVpnLink from query, queryParams: %v", queryParams))
+		}
+		req.EndTime = EndTimeCleanExpiredVpnLink
 	}
 
 	return &req, err

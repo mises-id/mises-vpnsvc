@@ -6,6 +6,7 @@ import (
 	"math/bits"
 	"os"
 	"path"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -127,4 +128,9 @@ func RemoveHexPrefix(val string) string {
 		val = strings.TrimPrefix(val, prefix)
 	}
 	return val
+}
+
+func IsEthAddress(addr string) bool {
+	re := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
+	return re.MatchString(addr)
 }

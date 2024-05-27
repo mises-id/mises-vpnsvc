@@ -121,15 +121,37 @@ func New(instance string, options ...httptransport.ClientOption) (pb.VpnsvcServe
 			options...,
 		).Endpoint()
 	}
+	var VerifyOrderFromChainZeroEndpoint endpoint.Endpoint
+	{
+		VerifyOrderFromChainZeroEndpoint = httptransport.NewClient(
+			"GET",
+			copyURL(u, "/sync_order_from_chain/"),
+			EncodeHTTPVerifyOrderFromChainZeroRequest,
+			DecodeHTTPVerifyOrderFromChainResponse,
+			options...,
+		).Endpoint()
+	}
+	var CleanExpiredVpnLinkZeroEndpoint endpoint.Endpoint
+	{
+		CleanExpiredVpnLinkZeroEndpoint = httptransport.NewClient(
+			"GET",
+			copyURL(u, "/clean_expired_vpn_link/"),
+			EncodeHTTPCleanExpiredVpnLinkZeroRequest,
+			DecodeHTTPCleanExpiredVpnLinkResponse,
+			options...,
+		).Endpoint()
+	}
 
 	return svc.Endpoints{
-		CreateOrderEndpoint:    CreateOrderZeroEndpoint,
-		UpdateOrderEndpoint:    UpdateOrderZeroEndpoint,
-		VpnInfoEndpoint:        VpnInfoZeroEndpoint,
-		FetchOrdersEndpoint:    FetchOrdersZeroEndpoint,
-		FetchOrderInfoEndpoint: FetchOrderInfoZeroEndpoint,
-		GetServerListEndpoint:  GetServerListZeroEndpoint,
-		GetServerLinkEndpoint:  GetServerLinkZeroEndpoint,
+		CreateOrderEndpoint:          CreateOrderZeroEndpoint,
+		UpdateOrderEndpoint:          UpdateOrderZeroEndpoint,
+		VpnInfoEndpoint:              VpnInfoZeroEndpoint,
+		FetchOrdersEndpoint:          FetchOrdersZeroEndpoint,
+		FetchOrderInfoEndpoint:       FetchOrderInfoZeroEndpoint,
+		GetServerListEndpoint:        GetServerListZeroEndpoint,
+		GetServerLinkEndpoint:        GetServerLinkZeroEndpoint,
+		VerifyOrderFromChainEndpoint: VerifyOrderFromChainZeroEndpoint,
+		CleanExpiredVpnLinkEndpoint:  CleanExpiredVpnLinkZeroEndpoint,
 	}, nil
 }
 
@@ -338,6 +360,60 @@ func DecodeHTTPGetServerLinkResponse(_ context.Context, r *http.Response) (inter
 	}
 
 	var resp pb.GetServerLinkResponse
+	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
+		return nil, errorDecoder(buf)
+	}
+
+	return &resp, nil
+}
+
+// DecodeHTTPVerifyOrderFromChainResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded VerifyOrderFromChainResponse response from the HTTP response body.
+// If the response has a non-200 status code, we will interpret that as an
+// error and attempt to decode the specific error message from the response
+// body. Primarily useful in a client.
+func DecodeHTTPVerifyOrderFromChainResponse(_ context.Context, r *http.Response) (interface{}, error) {
+	defer r.Body.Close()
+	buf, err := ioutil.ReadAll(r.Body)
+	if err == io.EOF {
+		return nil, errors.New("response http body empty")
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot read http body")
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, errors.Wrapf(errorDecoder(buf), "status code: '%d'", r.StatusCode)
+	}
+
+	var resp pb.VerifyOrderFromChainResponse
+	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
+		return nil, errorDecoder(buf)
+	}
+
+	return &resp, nil
+}
+
+// DecodeHTTPCleanExpiredVpnLinkResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded CleanExpiredVpnLinkResponse response from the HTTP response body.
+// If the response has a non-200 status code, we will interpret that as an
+// error and attempt to decode the specific error message from the response
+// body. Primarily useful in a client.
+func DecodeHTTPCleanExpiredVpnLinkResponse(_ context.Context, r *http.Response) (interface{}, error) {
+	defer r.Body.Close()
+	buf, err := ioutil.ReadAll(r.Body)
+	if err == io.EOF {
+		return nil, errors.New("response http body empty")
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot read http body")
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, errors.Wrapf(errorDecoder(buf), "status code: '%d'", r.StatusCode)
+	}
+
+	var resp pb.CleanExpiredVpnLinkResponse
 	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
 		return nil, errorDecoder(buf)
 	}
@@ -907,6 +983,152 @@ func EncodeHTTPGetServerLinkOneRequest(_ context.Context, r *http.Request, reque
 	values.Add("ethAddress", fmt.Sprint(req.EthAddress))
 
 	values.Add("server", fmt.Sprint(req.Server))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPVerifyOrderFromChainZeroRequest is a transport/http.EncodeRequestFunc
+// that encodes a verifyorderfromchain request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPVerifyOrderFromChainZeroRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.VerifyOrderFromChainRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"sync_order_from_chain",
+		"",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("chain", fmt.Sprint(req.Chain))
+
+	values.Add("startTime", fmt.Sprint(req.StartTime))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPVerifyOrderFromChainOneRequest is a transport/http.EncodeRequestFunc
+// that encodes a verifyorderfromchain request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPVerifyOrderFromChainOneRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.VerifyOrderFromChainRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"sync_order_from_chain",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("chain", fmt.Sprint(req.Chain))
+
+	values.Add("startTime", fmt.Sprint(req.StartTime))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPCleanExpiredVpnLinkZeroRequest is a transport/http.EncodeRequestFunc
+// that encodes a cleanexpiredvpnlink request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPCleanExpiredVpnLinkZeroRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.CleanExpiredVpnLinkRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"clean_expired_vpn_link",
+		"",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("endTime", fmt.Sprint(req.EndTime))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPCleanExpiredVpnLinkOneRequest is a transport/http.EncodeRequestFunc
+// that encodes a cleanexpiredvpnlink request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPCleanExpiredVpnLinkOneRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.CleanExpiredVpnLinkRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"clean_expired_vpn_link",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	values.Add("endTime", fmt.Sprint(req.EndTime))
 
 	r.URL.RawQuery = values.Encode()
 	return nil

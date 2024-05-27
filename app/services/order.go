@@ -30,6 +30,24 @@ func UpdateOrderOnPay(ctx context.Context, in *pb.UpdateOrderRequest) error {
 	return nil
 }
 
+func UpdateOrderOnPending(ctx context.Context, in *pb.UpdateOrderRequest) error {
+	id, err := primitive.ObjectIDFromHex(in.OrderId)
+	if err != nil {
+		return err
+	}
+	order := &models.VpnOrder{
+		ID:      id,
+		MisesID: in.EthAddress,
+		TxnHash: in.TxnHash,
+		Status: enum.VpnOrderPending,
+	}
+	err = order.UpdateOrderOnPendingById(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func UpdateOrderAndAccount(ctx context.Context, in *pb.UpdateOrderRequest) error {
 	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
 		// 1. update order

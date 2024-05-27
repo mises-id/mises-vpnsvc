@@ -127,14 +127,42 @@ func New(conn *grpc.ClientConn, options ...ClientOption) (pb.VpnsvcServer, error
 		).Endpoint()
 	}
 
+	var verifyorderfromchainEndpoint endpoint.Endpoint
+	{
+		verifyorderfromchainEndpoint = grpctransport.NewClient(
+			conn,
+			"vpnsvc.Vpnsvc",
+			"VerifyOrderFromChain",
+			EncodeGRPCVerifyOrderFromChainRequest,
+			DecodeGRPCVerifyOrderFromChainResponse,
+			pb.VerifyOrderFromChainResponse{},
+			clientOptions...,
+		).Endpoint()
+	}
+
+	var cleanexpiredvpnlinkEndpoint endpoint.Endpoint
+	{
+		cleanexpiredvpnlinkEndpoint = grpctransport.NewClient(
+			conn,
+			"vpnsvc.Vpnsvc",
+			"CleanExpiredVpnLink",
+			EncodeGRPCCleanExpiredVpnLinkRequest,
+			DecodeGRPCCleanExpiredVpnLinkResponse,
+			pb.CleanExpiredVpnLinkResponse{},
+			clientOptions...,
+		).Endpoint()
+	}
+
 	return svc.Endpoints{
-		CreateOrderEndpoint:    createorderEndpoint,
-		UpdateOrderEndpoint:    updateorderEndpoint,
-		VpnInfoEndpoint:        vpninfoEndpoint,
-		FetchOrdersEndpoint:    fetchordersEndpoint,
-		FetchOrderInfoEndpoint: fetchorderinfoEndpoint,
-		GetServerListEndpoint:  getserverlistEndpoint,
-		GetServerLinkEndpoint:  getserverlinkEndpoint,
+		CreateOrderEndpoint:          createorderEndpoint,
+		UpdateOrderEndpoint:          updateorderEndpoint,
+		VpnInfoEndpoint:              vpninfoEndpoint,
+		FetchOrdersEndpoint:          fetchordersEndpoint,
+		FetchOrderInfoEndpoint:       fetchorderinfoEndpoint,
+		GetServerListEndpoint:        getserverlistEndpoint,
+		GetServerLinkEndpoint:        getserverlinkEndpoint,
+		VerifyOrderFromChainEndpoint: verifyorderfromchainEndpoint,
+		CleanExpiredVpnLinkEndpoint:  cleanexpiredvpnlinkEndpoint,
 	}, nil
 }
 
@@ -189,6 +217,20 @@ func DecodeGRPCGetServerLinkResponse(_ context.Context, grpcReply interface{}) (
 	return reply, nil
 }
 
+// DecodeGRPCVerifyOrderFromChainResponse is a transport/grpc.DecodeResponseFunc that converts a
+// gRPC verifyorderfromchain reply to a user-domain verifyorderfromchain response. Primarily useful in a client.
+func DecodeGRPCVerifyOrderFromChainResponse(_ context.Context, grpcReply interface{}) (interface{}, error) {
+	reply := grpcReply.(*pb.VerifyOrderFromChainResponse)
+	return reply, nil
+}
+
+// DecodeGRPCCleanExpiredVpnLinkResponse is a transport/grpc.DecodeResponseFunc that converts a
+// gRPC cleanexpiredvpnlink reply to a user-domain cleanexpiredvpnlink response. Primarily useful in a client.
+func DecodeGRPCCleanExpiredVpnLinkResponse(_ context.Context, grpcReply interface{}) (interface{}, error) {
+	reply := grpcReply.(*pb.CleanExpiredVpnLinkResponse)
+	return reply, nil
+}
+
 // GRPC Client Encode
 
 // EncodeGRPCCreateOrderRequest is a transport/grpc.EncodeRequestFunc that converts a
@@ -237,6 +279,20 @@ func EncodeGRPCGetServerListRequest(_ context.Context, request interface{}) (int
 // user-domain getserverlink request to a gRPC getserverlink request. Primarily useful in a client.
 func EncodeGRPCGetServerLinkRequest(_ context.Context, request interface{}) (interface{}, error) {
 	req := request.(*pb.GetServerLinkRequest)
+	return req, nil
+}
+
+// EncodeGRPCVerifyOrderFromChainRequest is a transport/grpc.EncodeRequestFunc that converts a
+// user-domain verifyorderfromchain request to a gRPC verifyorderfromchain request. Primarily useful in a client.
+func EncodeGRPCVerifyOrderFromChainRequest(_ context.Context, request interface{}) (interface{}, error) {
+	req := request.(*pb.VerifyOrderFromChainRequest)
+	return req, nil
+}
+
+// EncodeGRPCCleanExpiredVpnLinkRequest is a transport/grpc.EncodeRequestFunc that converts a
+// user-domain cleanexpiredvpnlink request to a gRPC cleanexpiredvpnlink request. Primarily useful in a client.
+func EncodeGRPCCleanExpiredVpnLinkRequest(_ context.Context, request interface{}) (interface{}, error) {
+	req := request.(*pb.CleanExpiredVpnLinkRequest)
 	return req, nil
 }
 
