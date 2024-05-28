@@ -19,7 +19,7 @@ func NewService() pb.VpnsvcServer {
 	return vpnsvcService{}
 }
 
-const LAUNCH_TIME int64 = 1717171200
+const LAUNCH_TIME int64 = 1714492800
 
 type vpnsvcService struct{}
 
