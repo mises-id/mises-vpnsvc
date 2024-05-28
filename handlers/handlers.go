@@ -19,6 +19,8 @@ func NewService() pb.VpnsvcServer {
 	return vpnsvcService{}
 }
 
+const LAUNCH_TIME int64 = 1717171200
+
 type vpnsvcService struct{}
 
 func (s vpnsvcService) UpdateOrder(ctx context.Context, in *pb.UpdateOrderRequest) (*pb.UpdateOrderResponse, error) {
@@ -89,6 +91,8 @@ func (s vpnsvcService) VpnInfo(ctx context.Context, in *pb.VpnInfoRequest) (*pb.
 	var status uint64 = 0
 	if va.EndAt.After(t) {
 		status = 1
+	} else if va.EndAt.After(time.Unix(LAUNCH_TIME, 0)) {
+		status = 2
 	}
 
 	// orders
