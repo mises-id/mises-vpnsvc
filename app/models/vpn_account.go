@@ -116,8 +116,8 @@ func FindVpnAccountByMisesId(ctx context.Context, misesId string) (*VpnAccount, 
 
 func FindVpnAccountByEndTime(ctx context.Context, endTime time.Time, limit int64) ([]*VpnAccount, error) {
 	res := make([]*VpnAccount, 0)
-	filter := bson.M{"endAt": bson.M{"$lte": endTime}, "clear": NotCleared}
-	err := db.ODM(ctx).Sort(bson.M{"_id": -1}).Limit(limit).Find(&res, filter).Error
+	filter := bson.M{"end_at": bson.M{"$lte": endTime}, "clear": NotCleared}
+	err := db.ODM(ctx).Collection("vpnaccount").Sort(bson.M{"_id": -1}).Limit(limit).Find(&res, filter).Error
 	if err != nil {
 		return nil, err
 	}
