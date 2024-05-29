@@ -26,21 +26,26 @@ type ApiResponse struct {
 	Obj     interface{} `json:"obj"`
 }
 
-type GetServerLinkParam struct {
+type AddInboundsParam struct {
 	UserId     string `json:"userId"`
 	OrderId    string `json:"orderId"`
 	ExpiryTime int64  `json:"expiryTime"`
 }
 
+type DelInboundsParam struct {
+	UserIds []string `json:"userIds"`
+}
+
 // todo:test
 var (
 	TestAddInboundsApi = "http://%s:55555/mises/add_inbounds"
+	TestDelInboundsApi = "http://%s:55555/mises/del_inbounds"
 )
 
 type MisesXuiClient struct{}
 
 func (cc *MisesXuiClient) AddInbounds(userId, orderId, server string, expiryTime int64) (string, error) {
-	param := new(GetServerLinkParam)
+	param := new(AddInboundsParam)
 	param.UserId = userId
 	param.OrderId = orderId
 	param.ExpiryTime = expiryTime
@@ -66,6 +71,29 @@ func (cc *MisesXuiClient) AddInbounds(userId, orderId, server string, expiryTime
 		return "", errors.New("empty vpn link")
 	}
 	return link, nil
+}
+
+func (cc *MisesXuiClient) DelInbounds(userIds []string, server string) error {
+	param := new(DelInboundsParam)
+	param.UserIds = userIds
+	paramBytes, err := json.Marshal(param)
+	if err != nil {
+		return err
+	}
+
+	bs, err := requestXui(paramBytes, fmt.Sprintf(TestDelInboundsApi, server))
+	if err != nil {
+		return err
+	}
+	res := new(ApiResponse)
+	err = json.Unmarshal(bs, res)
+	if err != nil {
+		return err
+	}
+	if !res.Success {
+		return fmt.Errorf("DelInbounds error: %s", res.Msg)
+	}
+	return nil
 }
 
 func requestXui(paramBytes []byte, api string) ([]byte, error) {

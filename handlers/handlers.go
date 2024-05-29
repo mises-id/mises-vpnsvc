@@ -224,6 +224,13 @@ func (s vpnsvcService) VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOr
 }
 
 func (s vpnsvcService) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest) (*pb.CleanExpiredVpnLinkResponse, error) {
+	// for production
+	//go services.CleanExpiredVpnLink(ctx, in)
+	err := services.CleanExpiredVpnLink(ctx, in)
+	if err != nil {
+		return nil, err
+	}
 	var resp pb.CleanExpiredVpnLinkResponse
+	resp.Code = 0
 	return &resp, nil
 }

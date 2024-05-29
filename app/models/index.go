@@ -62,6 +62,9 @@ func EnsureIndex() {
 				Unique: &trueBool,
 			},
 		},
+		{
+			Keys: bson.M{"end_at": 1},
+		},
 	}, opts)
 
 	if err != nil {

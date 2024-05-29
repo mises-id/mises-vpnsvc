@@ -6,6 +6,8 @@ import (
 	"github.com/mises-id/mises-vpnsvc/app/models"
 	"github.com/mises-id/mises-vpnsvc/app/provider"
 	pb "github.com/mises-id/mises-vpnsvc/proto"
+	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
 	"time"
 )
 
@@ -116,4 +118,61 @@ func GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (string, er
 	return xui.AddInbounds(va.MisesID, va.LastOrderId.Hex(), in.Server, va.EndAt.Unix())
 
 	// todo: 更新本地库的inbound信息
+}
+
+func CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest) error {
+	endAt := time.Now()
+	if in.EndTime > 0 {
+		endAt = time.Unix(in.EndTime, 0)
+	}
+
+	maxTime := 5 * time.Minute
+	done := make(chan bool)
+	defer close(done)
+
+	go func() {
+		time.Sleep(maxTime)
+		done <- true
+	}()
+
+	for {
+		select {
+			case <-done:
+				logrus.Info("CleanExpiredVpnLink exceeds max time")
+				return nil
+			default:
+				// fetch expired account
+				va, err := models.FindVpnAccountByEndTime(ctx, endAt, 100)
+				if err != nil {
+					return err
+				}
+				if len(va) == 0 {
+					logrus.Infof("no expired accounts now")
+					return nil
+				}
+				misesIds := make([]string, 0, len(va))
+				for _, v := range va {
+					misesIds = append(misesIds, v.MisesID)
+				}
+
+				// clear them at the vpn server side
+				xui := &provider.MisesXuiClient{}
+				for _, v := range ServerList {
+					if err := xui.DelInbounds(misesIds, v.Ip); err != nil {
+						return err
+					}
+				}
+
+				// update the clear status
+				up := bson.M{
+					"clear": models.Cleared,
+				}
+				if err := models.UpdateVpnAccountsByMisesIds(ctx, up, misesIds); err != nil {
+					return err
+				}
+
+				// sleep
+				time.Sleep(1 * time.Second)
+		}
+	}
 }
