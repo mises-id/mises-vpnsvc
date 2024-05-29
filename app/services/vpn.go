@@ -128,7 +128,6 @@ func CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest)
 
 	maxTime := 5 * time.Minute
 	done := make(chan bool)
-	defer close(done)
 
 	go func() {
 		time.Sleep(maxTime)
