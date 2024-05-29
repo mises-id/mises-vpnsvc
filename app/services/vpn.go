@@ -164,7 +164,9 @@ func CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest)
 
 				// update the clear status
 				up := bson.M{
-					"clear": models.Cleared,
+					"$set": bson.M{
+						"clear": models.Cleared,
+					},
 				}
 				if err := models.UpdateVpnAccountsByMisesIds(ctx, up, misesIds); err != nil {
 					return err
