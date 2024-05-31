@@ -52,13 +52,11 @@ func (m *VpnAccount) Upsert(ctx context.Context) error {
 			"clear":         NotCleared,
 		},
 	}
-	result, err := db.DB().Collection("vpnaccount").UpdateOne(ctx, filter, update, options.Update().SetUpsert(true))
+	_, err := db.DB().Collection("vpnaccount").UpdateOne(ctx, filter, update, options.Update().SetUpsert(true))
 	if err != nil {
 		return err
 	}
-	if result.UpsertedCount == 0 {
-		return errors.New("vpn account upsert error")
-	}
+	
 	return nil
 }
 

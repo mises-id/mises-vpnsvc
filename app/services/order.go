@@ -51,19 +51,19 @@ func UpdateOrderOnPending(ctx context.Context, in *pb.UpdateOrderRequest) error 
 func UpdateOrderAndAccount(ctx context.Context, in *pb.UpdateOrderRequest) error {
 	callback := func(sessCtx mongo.SessionContext) (interface{}, error) {
 		// 1. update order
-		if err := UpdateOrderOnPay(ctx, in); err != nil {
+		if err := UpdateOrderOnPay(sessCtx, in); err != nil {
 			return nil, err
 		}
 
 		// 2. get order info
 		id, _ := primitive.ObjectIDFromHex(in.OrderId)
-		order, err := models.FindVpnOrderByID(ctx, in.EthAddress, id)
+		order, err := models.FindVpnOrderByID(sessCtx, in.EthAddress, id)
 		if err != nil {
 			return nil, err
 		}
 
 		// 3. update vpn account
-		if err := ModifyVpnAccount(ctx, order); err != nil {
+		if err := ModifyVpnAccount(sessCtx, order); err != nil {
 			return nil, fmt.Errorf("modify vpn account: %w", err)
 		}
 
