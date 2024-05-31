@@ -56,7 +56,7 @@ func (m *VpnAccount) Upsert(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
