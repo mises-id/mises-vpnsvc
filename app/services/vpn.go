@@ -5,29 +5,11 @@ import (
 	"errors"
 	"github.com/mises-id/mises-vpnsvc/app/models"
 	"github.com/mises-id/mises-vpnsvc/app/provider"
+	"github.com/mises-id/mises-vpnsvc/config/vpn"
 	pb "github.com/mises-id/mises-vpnsvc/proto"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"time"
-)
-
-// todo:test get from env
-
-var (
-	ServerList = []*pb.GetServerListItem{
-		{
-			Ip:   "34.230.112.190",
-			Name: "Mises Test",
-		},
-		{
-			Ip:   "52.204.164.56",
-			Name: "Mises Build",
-		},
-	}
-	ServerAddressList = map[string]struct{}{
-		"34.230.112.190": {},
-		"52.204.164.56": {},
-	}
 )
 
 func ModifyVpnAccount(ctx context.Context, order *models.VpnOrder) error {
@@ -99,11 +81,11 @@ func GetServerList(ctx context.Context, in *pb.GetServerListRequest) ([]*pb.GetS
 	if _, err := CheckVpnAccount(ctx, in.EthAddress); err != nil {
 		return nil, err
 	}
-	return ServerList, nil
+	return vpn.ServerList, nil
 }
 
 func GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (string, error) {
-	if _, ok := ServerAddressList[in.Server]; !ok {
+	if _, ok := vpn.ServerAddressList[in.Server]; !ok {
 		return "", errors.New("server error")
 	}
 
@@ -156,7 +138,7 @@ func CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest)
 
 				// clear them at the vpn server side
 				xui := &provider.MisesXuiClient{}
-				for _, v := range ServerList {
+				for _, v := range vpn.ServerList {
 					if err := xui.DelInbounds(misesIds, v.Ip); err != nil {
 						return err
 					}

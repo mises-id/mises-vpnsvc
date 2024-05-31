@@ -2,6 +2,6 @@ package vpn
 
 import "testing"
 
-func TestInit(t *testing.T) {
-	Init()
+func TestInitConfig(t *testing.T) {
+	InitConfig()
 }
