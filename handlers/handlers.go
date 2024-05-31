@@ -182,9 +182,7 @@ func (s vpnsvcService) FetchOrders(ctx context.Context, in *pb.FetchOrdersReques
 				CreateTime: v.CreatedAt.Format(time.DateTime),
 			})
 		}
-		resp.Data = &pb.FetchOrdersResult{
-			Orders: vo,
-		}
+		resp.Data = vo
 	}
 	return &resp, nil
 }

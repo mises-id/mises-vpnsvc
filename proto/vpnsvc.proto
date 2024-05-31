@@ -187,13 +187,9 @@ message FetchOrdersRequest {
     string ethAddress = 1;
 }
 
-message FetchOrdersResult {
-    repeated VpnOrder orders = 1;
-}
-
 message FetchOrdersResponse {
     uint64 code = 1;
-    FetchOrdersResult data = 2;
+    repeated VpnOrder data = 2;
     string error = 3;
 }
 
