@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mises-id/mises-vpnsvc/config/vpn"
 
 	"context"
 	"time"
@@ -24,6 +25,10 @@ func main() {
 	fmt.Println("setup mongo...")
 	db.SetupMongo(ctx)
 	models.EnsureIndex()
+
+	// vpn config
+	vpn.InitConfig()
+
 	cfg := server.DefaultConfig
 	cfg = handlers.SetConfig(cfg)
 
