@@ -187,7 +187,7 @@ func CountUserVpnOrdersInTimeRange(ctx context.Context, misesId string, timeRang
 		"created_at": bson.M{
 			"$gt": time.Now().Add(-1 * timeRange),
 		},
-		"status": enum.VpnOrderPending,
+		"status": status,
 	})
 	if err != nil {
 		return 0, err
