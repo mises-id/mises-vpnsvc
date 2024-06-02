@@ -28,7 +28,6 @@ func (m *VpnChain) UpsertBlockNumber(ctx context.Context) error {
 		"$setOnInsert": bson.M{
 			"chain_id":   m.ChainID,
 			"created_at": t,
-			"last_block_number": m.LastBlockNumber,
 		},
 		"$set": bson.M{
 			"updated_at":        t,
