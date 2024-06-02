@@ -30,13 +30,13 @@ func (s vpnsvcService) UpdateOrder(ctx context.Context, in *pb.UpdateOrderReques
 	}
 
 	// todo:only for test
-	if err := services.UpdateOrderAndAccount(ctx, in); err != nil {
-		return nil, err
-	}
-
-	//if err := services.UpdateOrderOnPending(ctx, in); err != nil {
+	//if err := services.UpdateOrderAndAccount(ctx, in); err != nil {
 	//	return nil, err
 	//}
+
+	if err := services.UpdateOrderOnPending(ctx, in); err != nil {
+		return nil, err
+	}
 
 	var resp pb.UpdateOrderResponse
 	resp.Code = 0
@@ -57,8 +57,10 @@ func (s vpnsvcService) CreateOrder(ctx context.Context, in *pb.CreateOrderReques
 		return nil, errors.New("plan error")
 	}
 
-	// todo: 校验24小时订单数，超过限制不予下单
-
+	cnt, _ := models.CountUserVpnOrdersInTimeRange(ctx, in.EthAddress, 8*time.Hour, enum.VpnOrderPending)
+	if cnt > 10 {
+		return nil, errors.New("too much pending orders in 8 hours")
+	}
 
 	// data
 	order := &models.VpnOrder{

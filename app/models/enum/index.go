@@ -9,10 +9,15 @@ type (
 )
 
 const (
-	//StatusType
+	// StatusType
 	StatusOpen   StatusType = 1
 	StatusClose  StatusType = 2
 	StatusDelete StatusType = 3
+
+	// Chain ID
+	ChainIDETH     uint64 = 1
+	ChainIDBscTest uint64 = 97
+	ChainIDBsc     uint64 = 56
 )
 
 // config
@@ -36,7 +41,7 @@ var (
 	}
 
 	Chains = Chain{
-		97: "bsc test net", // bsc testnet
-		56: "bsc",          // bsc
+		ChainIDBscTest: "bsc test net",
+		ChainIDBsc:     "bsc",
 	}
 )

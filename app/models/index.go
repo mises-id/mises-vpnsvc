@@ -30,7 +30,7 @@ type (
 
 func EnsureIndex() {
 
-	opts := options.CreateIndexes().SetMaxTime(20 * time.Second)
+	opts := options.CreateIndexes().SetMaxTime(30 * time.Second)
 	trueBool := true
 
 	_, err := db.DB().Collection("vpnorder").Indexes().CreateMany(context.Background(), []mongo.IndexModel{
@@ -64,6 +64,21 @@ func EnsureIndex() {
 		},
 		{
 			Keys: bson.M{"end_at": 1},
+		},
+	}, opts)
+
+	if err != nil {
+		logrus.Debug(err)
+	}
+
+	_, err = db.DB().Collection("vpnchain").Indexes().CreateMany(context.Background(), []mongo.IndexModel{
+		{
+			Keys: bsonx.Doc{{
+				Key: "chain_id", Value: bsonx.Int32(1),
+			}},
+			Options: &options.IndexOptions{
+				Unique: &trueBool,
+			},
 		},
 	}, opts)
 

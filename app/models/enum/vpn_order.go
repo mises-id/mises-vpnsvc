@@ -13,11 +13,6 @@ const (
 	VpnOrderFail    VpnOrderStatus = 2
 	VpnOrderPending VpnOrderStatus = 3
 	VpnOrderRetry   VpnOrderStatus = 4
-
-	// ChainID
-	ChainETH     ChainID = 1
-	ChainBSC     ChainID = 56
-	ChainBSCTest ChainID = 97
 )
 
 var (

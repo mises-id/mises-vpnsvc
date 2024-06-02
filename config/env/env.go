@@ -19,6 +19,7 @@ type Env struct {
 	DBPass             string `env:"DB_PASS"`
 	DBName             string `env:"DB_NAME" envDefault:"mises_vpn_test"`
 	MisesVpnPrivateKey string `env:"MISES_VPN_PRIVATE_KEY" envDefault:""`
+	BscApiKey          string `env:"BSC_API_KEY" envDefault:""`
 	SyncVpnOrderMode   string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
 	RootPath           string
 }

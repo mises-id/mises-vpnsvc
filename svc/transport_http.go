@@ -850,7 +850,10 @@ func DecodeHTTPVerifyOrderFromChainZeroRequest(_ context.Context, r *http.Reques
 
 	if ChainVerifyOrderFromChainStrArr, ok := queryParams["chain"]; ok {
 		ChainVerifyOrderFromChainStr := ChainVerifyOrderFromChainStrArr[0]
-		ChainVerifyOrderFromChain := ChainVerifyOrderFromChainStr
+		ChainVerifyOrderFromChain, err := strconv.ParseUint(ChainVerifyOrderFromChainStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting ChainVerifyOrderFromChain from query, queryParams: %v", queryParams))
+		}
 		req.Chain = ChainVerifyOrderFromChain
 	}
 
@@ -901,7 +904,10 @@ func DecodeHTTPVerifyOrderFromChainOneRequest(_ context.Context, r *http.Request
 
 	if ChainVerifyOrderFromChainStrArr, ok := queryParams["chain"]; ok {
 		ChainVerifyOrderFromChainStr := ChainVerifyOrderFromChainStrArr[0]
-		ChainVerifyOrderFromChain := ChainVerifyOrderFromChainStr
+		ChainVerifyOrderFromChain, err := strconv.ParseUint(ChainVerifyOrderFromChainStr, 10, 64)
+		if err != nil {
+			return nil, errors.Wrap(err, fmt.Sprintf("Error while extracting ChainVerifyOrderFromChain from query, queryParams: %v", queryParams))
+		}
 		req.Chain = ChainVerifyOrderFromChain
 	}
 

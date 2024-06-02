@@ -71,16 +71,17 @@ type (
 	VpnOrder struct {
 		ID              primitive.ObjectID  `bson:"_id,omitempty"`
 		MisesID         string              `bson:"misesid"`
-		TokenAmount    string              `bson:"token_account"`
+		TokenAmount     string              `bson:"token_account"`
 		TokenName       string              `bson:"token_name"`
 		TimeRange       time.Duration       `bson:"time_range"`
 		ChainID         uint64              `bson:"chain_id"`
 		TxnHash         string              `bson:"txn_hash"`
 		ContractAddress string              `bson:"contract_address"`
 		FromAddress     string              `bson:"from_address"`
+		BlockNumber     int64               `bson:"block_number"`
 		Status          enum.VpnOrderStatus `bson:"status"`
 		Transaction     *Transaction        `bson:"tx,omitempty"`
-		OrderAt         time.Time          `bson:"order_at,omitempty"`
+		OrderAt         time.Time           `bson:"order_at,omitempty"`
 		BlockAt         *time.Time          `bson:"block_at,omitempty"`
 		UpdatedAt       time.Time           `bson:"updated_at"`
 		CreatedAt       time.Time           `bson:"created_at"`
