@@ -12,14 +12,10 @@ type Chain interface {
 
 func NewChain(chainName string) (Chain, error) {
 	switch chainName {
-	case "bsc":
-		return NewBsc(), nil
 	case "bsc_testnet":
 		return NewBscTestNet(), nil
-	case "tron":
-		return NewTron(), nil
-	case "tron_testnet":
-		return NewTronTestNet(), nil
+	case "bsc":
+		return NewBsc(), nil
 	default:
 		return nil, errors.New("chain error")
 	}

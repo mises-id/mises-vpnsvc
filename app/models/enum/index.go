@@ -1,7 +1,9 @@
 package enum
+
 import (
 	"time"
 )
+
 type (
 	StatusType uint8
 )
@@ -16,8 +18,8 @@ const (
 // config
 type PlanItem struct {
 	TokenAmount string
-	TokenName    string
-	TimeRange    time.Duration
+	TokenName   string
+	TimeRange   time.Duration
 }
 
 type Plan map[uint64]PlanItem
@@ -28,12 +30,13 @@ var (
 	Plans = Plan{
 		1: {
 			TokenAmount: "3.00",
-			TokenName:    "USDT",
-			TimeRange:    30 * 24 * time.Hour,
+			TokenName:   "USDT",
+			TimeRange:   30 * 24 * time.Hour,
 		},
 	}
 
 	Chains = Chain{
 		97: "bsc test net", // bsc testnet
+		56: "bsc",          // bsc
 	}
 )

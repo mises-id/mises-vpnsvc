@@ -181,6 +181,20 @@ func FindVpnOrdersByMisesID(ctx context.Context, misesId string) ([]*VpnOrder, e
 	return results, nil
 }
 
+func CountUserVpnOrdersInTimeRange(ctx context.Context, misesId string, timeRange time.Duration, status enum.VpnOrderStatus) (int64, error) {
+	cnt, err := db.DB().Collection("vpnorder").CountDocuments(ctx, &bson.M{
+		"misesid": misesId,
+		"created_at": bson.M{
+			"$gt": time.Now().Add(-1 * timeRange),
+		},
+		"status": enum.VpnOrderPending,
+	})
+	if err != nil {
+		return 0, err
+	}
+	return cnt, nil
+}
+
 func (u *VpnOrder) UpdateOrderOnPayById(ctx context.Context) error {
 	update := bson.M{}
 	update["txn_hash"] = u.TxnHash
