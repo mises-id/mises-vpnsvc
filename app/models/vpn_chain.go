@@ -40,3 +40,17 @@ func (m *VpnChain) UpsertBlockNumber(ctx context.Context) error {
 	}
 	return nil
 }
+
+func GetLastBlockNumberFromChain(ctx context.Context, chainID uint64) (int64, error) {
+	res := &VpnChain{}
+	result := db.DB().Collection("vpnchain").FindOne(ctx, &bson.M{
+		"chain_id": chainID,
+	})
+	if err := result.Err(); err != nil {
+		return 0, err
+	}
+	if err := result.Decode(res); err != nil {
+		return 0, err
+	}
+	return res.LastBlockNumber, nil
+}
