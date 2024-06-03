@@ -27,5 +27,5 @@ func VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOrderFromChainReques
 	if err != nil {
 		return err
 	}
-	return c.VerifyOrders(in.StartBlock)
+	return c.VerifyOrders(ctx, in.StartBlock)
 }

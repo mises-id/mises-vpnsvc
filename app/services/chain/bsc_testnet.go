@@ -9,8 +9,6 @@ import (
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
 	"github.com/mises-id/mises-vpnsvc/config/env"
 	"github.com/mises-id/mises-vpnsvc/lib/utils"
-	"io"
-	"net/http"
 )
 
 const BscTestnetGetTransactionsEndPoint = "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=%s&startblock=%d&endblock=99999999&page=1&offset=%d&sort=asc&apikey=%s"
