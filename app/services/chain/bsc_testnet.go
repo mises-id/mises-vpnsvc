@@ -11,7 +11,9 @@ import (
 	"github.com/mises-id/mises-vpnsvc/lib/utils"
 )
 
-const BscTestnetGetTransactionsEndPoint = "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=%s&startblock=%d&endblock=99999999&page=1&offset=%d&sort=asc&apikey=%s"
+const (
+	BscTestnetGetTransactionsEndPoint = "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=%s&startblock=%d&endblock=99999999&page=1&offset=%d&sort=asc&apikey=%s"
+)
 
 type BscTestnetTransaction struct {
 	BlockNumber       string `json:"blockNumber"`
@@ -34,6 +36,12 @@ type BscTestnetTransaction struct {
 	Confirmations     string `json:"confirmations"`
 	MethodId          string `json:"methodId"`
 	FunctionName      string `json:"functionName"`
+}
+
+type BscTestnetTransactionsResponse struct {
+	Status  string                   `json:"status"`
+	Message string                   `json:"message"`
+	Result  []*BscTestnetTransaction `json:"result"`
 }
 
 type BscTestNet struct{}
@@ -65,9 +73,12 @@ func (bt *BscTestNet) GetTransactions(startBlock int64, limit uint64) ([]*BscTes
 	if len(ret) == 0 {
 		return nil, errors.New("no data")
 	}
-	ts := make([]*BscTestnetTransaction, 0)
-	if err := json.Unmarshal(ret, &ts); err != nil {
+	var resp BscTestnetTransactionsResponse
+	if err := json.Unmarshal(ret, &resp); err != nil {
 		return nil, err
 	}
-	return ts, nil
+	if resp.Status != "1" {
+		return nil, errors.New("resp status error")
+	}
+	return resp.Result, nil
 }
