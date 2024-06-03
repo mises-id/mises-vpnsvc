@@ -2,9 +2,11 @@ package models
 
 import (
 	"context"
+	"errors"
 	"github.com/mises-id/mises-vpnsvc/lib/db"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
@@ -46,7 +48,10 @@ func GetLastBlockNumberFromChain(ctx context.Context, chainID uint64) (int64, er
 	result := db.DB().Collection("vpnchain").FindOne(ctx, &bson.M{
 		"chain_id": chainID,
 	})
-	if err := result.Err(); err != nil {
+	err := result.Err()
+	if errors.Is(err, mongo.ErrNoDocuments) {
+		return 0, nil
+	} else {
 		return 0, err
 	}
 	if err := result.Decode(res); err != nil {

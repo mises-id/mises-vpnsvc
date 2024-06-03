@@ -11,17 +11,21 @@ import (
 var Envs *Env
 
 type Env struct {
-	Port               int    `env:"PORT" envDefault:"8080"`
-	AppEnv             string `env:"APP_ENV" envDefault:"development"`
-	LogLevel           string `env:"LOG_LEVEL" envDefault:"INFO"`
-	MongoURI           string `env:"MONGO_URI" envDefault:"mongodb://localhost:27017"`
-	DBUser             string `env:"DB_USER"`
-	DBPass             string `env:"DB_PASS"`
-	DBName             string `env:"DB_NAME" envDefault:"mises_vpn_test"`
-	MisesVpnPrivateKey string `env:"MISES_VPN_PRIVATE_KEY" envDefault:""`
-	BscApiKey          string `env:"BSC_API_KEY" envDefault:""`
-	SyncVpnOrderMode   string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
-	RootPath           string
+	Port                   int    `env:"PORT" envDefault:"8080"`
+	AppEnv                 string `env:"APP_ENV" envDefault:"development"`
+	LogLevel               string `env:"LOG_LEVEL" envDefault:"INFO"`
+	MongoURI               string `env:"MONGO_URI" envDefault:"mongodb://localhost:27017"`
+	DBUser                 string `env:"DB_USER"`
+	DBPass                 string `env:"DB_PASS"`
+	DBName                 string `env:"DB_NAME" envDefault:"mises_vpn_test"`
+	MisesVpnPrivateKey     string `env:"MISES_VPN_PRIVATE_KEY" envDefault:""`
+	BscTestContractAddress string `env:"BSC_TEST_CONTRACT_ADDRESS" envDefault:""`
+	BscTestUsdtAddress     string `env:"BSC_TEST_USDT_ADDRESS" envDefault:""`
+	BscContractAddress     string `env:"BSC_CONTRACT_ADDRESS" envDefault:""`
+	BscUsdtAddress         string `env:"BSC_USDT_ADDRESS" envDefault:""`
+	BscApiKey              string `env:"BSC_API_KEY" envDefault:""`
+	SyncVpnOrderMode       string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
+	RootPath               string
 }
 
 func init() {

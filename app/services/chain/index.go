@@ -8,7 +8,7 @@ import (
 )
 
 type Chain interface {
-	VerifyOrders(startBlock int64) error
+	VerifyOrders(ctx context.Context, startBlock int64) error
 }
 
 func NewChain(chainID uint64) (Chain, error) {
