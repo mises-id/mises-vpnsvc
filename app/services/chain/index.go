@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
 	"github.com/mises-id/mises-vpnsvc/config/env"
@@ -246,21 +247,13 @@ func DecodeTransactionInput(input string) (*TransactionInput, error) {
 	if !ok {
 		return nil, errors.New("param error: tokenAddress")
 	}
-	tokenAddress, ok := rawTokenAddress.(string)
-	if !ok {
-		return nil, errors.New("param type error: tokenAddress")
-	}
 	rawUniqueKey, ok := inputsMap["uniqueKey"]
 	if !ok {
 		return nil, errors.New("param error: uniqueKey")
 	}
-	uniqueKey, ok := rawUniqueKey.(string)
-	if !ok {
-		return nil, errors.New("param type error: uniqueKey")
-	}
 	return &TransactionInput{
 		Amount: amount,
-		TokenAddress: tokenAddress,
-		UniqueKey: uniqueKey,
+		TokenAddress: fmt.Sprintf("%s", rawTokenAddress),
+		UniqueKey: fmt.Sprintf("%s", rawUniqueKey),
 	}, nil
 }
