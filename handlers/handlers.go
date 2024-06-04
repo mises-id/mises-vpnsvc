@@ -31,13 +31,13 @@ func (s vpnsvcService) UpdateOrder(ctx context.Context, in *pb.UpdateOrderReques
 	}
 
 	// todo:only for test
-	if err := order.UpdateOrderAndAccountForTest(ctx, in); err != nil {
-		return nil, err
-	}
-
-	//if err := services.UpdateOrderOnPending(ctx, in); err != nil {
+	//if err := order.UpdateOrderAndAccountForTest(ctx, in); err != nil {
 	//	return nil, err
 	//}
+
+	if err := order.UpdateOrderOnPending(ctx, in); err != nil {
+		return nil, err
+	}
 
 	var resp pb.UpdateOrderResponse
 	resp.Code = 0
