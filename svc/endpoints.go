@@ -42,6 +42,7 @@ type Endpoints struct {
 	GetServerLinkEndpoint        endpoint.Endpoint
 	VerifyOrderFromChainEndpoint endpoint.Endpoint
 	CleanExpiredVpnLinkEndpoint  endpoint.Endpoint
+	GetVpnConfigEndpoint         endpoint.Endpoint
 }
 
 // Endpoints
@@ -116,6 +117,14 @@ func (e Endpoints) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredV
 		return nil, err
 	}
 	return response.(*pb.CleanExpiredVpnLinkResponse), nil
+}
+
+func (e Endpoints) GetVpnConfig(ctx context.Context, in *pb.GetVpnConfigRequest) (*pb.GetVpnConfigResponse, error) {
+	response, err := e.GetVpnConfigEndpoint(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return response.(*pb.GetVpnConfigResponse), nil
 }
 
 // Make Endpoints
@@ -219,6 +228,17 @@ func MakeCleanExpiredVpnLinkEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
 	}
 }
 
+func MakeGetVpnConfigEndpoint(s pb.VpnsvcServer) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(*pb.GetVpnConfigRequest)
+		v, err := s.GetVpnConfig(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+		return v, nil
+	}
+}
+
 // WrapAllExcept wraps each Endpoint field of struct Endpoints with a
 // go-kit/kit/endpoint.Middleware.
 // Use this for applying a set of middlewares to every endpoint in the service.
@@ -235,6 +255,7 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 		"GetServerLink":        {},
 		"VerifyOrderFromChain": {},
 		"CleanExpiredVpnLink":  {},
+		"GetVpnConfig":         {},
 	}
 
 	for _, ex := range excluded {
@@ -272,6 +293,9 @@ func (e *Endpoints) WrapAllExcept(middleware endpoint.Middleware, excluded ...st
 		if inc == "CleanExpiredVpnLink" {
 			e.CleanExpiredVpnLinkEndpoint = middleware(e.CleanExpiredVpnLinkEndpoint)
 		}
+		if inc == "GetVpnConfig" {
+			e.GetVpnConfigEndpoint = middleware(e.GetVpnConfigEndpoint)
+		}
 	}
 }
 
@@ -295,6 +319,7 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 		"GetServerLink":        {},
 		"VerifyOrderFromChain": {},
 		"CleanExpiredVpnLink":  {},
+		"GetVpnConfig":         {},
 	}
 
 	for _, ex := range excluded {
@@ -331,6 +356,9 @@ func (e *Endpoints) WrapAllLabeledExcept(middleware func(string, endpoint.Endpoi
 		}
 		if inc == "CleanExpiredVpnLink" {
 			e.CleanExpiredVpnLinkEndpoint = middleware("CleanExpiredVpnLink", e.CleanExpiredVpnLinkEndpoint)
+		}
+		if inc == "GetVpnConfig" {
+			e.GetVpnConfigEndpoint = middleware("GetVpnConfig", e.GetVpnConfigEndpoint)
 		}
 	}
 }

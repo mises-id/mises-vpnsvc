@@ -153,6 +153,19 @@ func New(conn *grpc.ClientConn, options ...ClientOption) (pb.VpnsvcServer, error
 		).Endpoint()
 	}
 
+	var getvpnconfigEndpoint endpoint.Endpoint
+	{
+		getvpnconfigEndpoint = grpctransport.NewClient(
+			conn,
+			"vpnsvc.Vpnsvc",
+			"GetVpnConfig",
+			EncodeGRPCGetVpnConfigRequest,
+			DecodeGRPCGetVpnConfigResponse,
+			pb.GetVpnConfigResponse{},
+			clientOptions...,
+		).Endpoint()
+	}
+
 	return svc.Endpoints{
 		CreateOrderEndpoint:          createorderEndpoint,
 		UpdateOrderEndpoint:          updateorderEndpoint,
@@ -163,6 +176,7 @@ func New(conn *grpc.ClientConn, options ...ClientOption) (pb.VpnsvcServer, error
 		GetServerLinkEndpoint:        getserverlinkEndpoint,
 		VerifyOrderFromChainEndpoint: verifyorderfromchainEndpoint,
 		CleanExpiredVpnLinkEndpoint:  cleanexpiredvpnlinkEndpoint,
+		GetVpnConfigEndpoint:         getvpnconfigEndpoint,
 	}, nil
 }
 
@@ -231,6 +245,13 @@ func DecodeGRPCCleanExpiredVpnLinkResponse(_ context.Context, grpcReply interfac
 	return reply, nil
 }
 
+// DecodeGRPCGetVpnConfigResponse is a transport/grpc.DecodeResponseFunc that converts a
+// gRPC getvpnconfig reply to a user-domain getvpnconfig response. Primarily useful in a client.
+func DecodeGRPCGetVpnConfigResponse(_ context.Context, grpcReply interface{}) (interface{}, error) {
+	reply := grpcReply.(*pb.GetVpnConfigResponse)
+	return reply, nil
+}
+
 // GRPC Client Encode
 
 // EncodeGRPCCreateOrderRequest is a transport/grpc.EncodeRequestFunc that converts a
@@ -293,6 +314,13 @@ func EncodeGRPCVerifyOrderFromChainRequest(_ context.Context, request interface{
 // user-domain cleanexpiredvpnlink request to a gRPC cleanexpiredvpnlink request. Primarily useful in a client.
 func EncodeGRPCCleanExpiredVpnLinkRequest(_ context.Context, request interface{}) (interface{}, error) {
 	req := request.(*pb.CleanExpiredVpnLinkRequest)
+	return req, nil
+}
+
+// EncodeGRPCGetVpnConfigRequest is a transport/grpc.EncodeRequestFunc that converts a
+// user-domain getvpnconfig request to a gRPC getvpnconfig request. Primarily useful in a client.
+func EncodeGRPCGetVpnConfigRequest(_ context.Context, request interface{}) (interface{}, error) {
+	req := request.(*pb.GetVpnConfigRequest)
 	return req, nil
 }
 

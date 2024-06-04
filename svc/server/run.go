@@ -62,6 +62,7 @@ func NewEndpoints(service pb.VpnsvcServer) svc.Endpoints {
 		getserverlinkEndpoint        = svc.MakeGetServerLinkEndpoint(service)
 		verifyorderfromchainEndpoint = svc.MakeVerifyOrderFromChainEndpoint(service)
 		cleanexpiredvpnlinkEndpoint  = svc.MakeCleanExpiredVpnLinkEndpoint(service)
+		getvpnconfigEndpoint         = svc.MakeGetVpnConfigEndpoint(service)
 	)
 
 	endpoints := svc.Endpoints{
@@ -74,6 +75,7 @@ func NewEndpoints(service pb.VpnsvcServer) svc.Endpoints {
 		GetServerLinkEndpoint:        getserverlinkEndpoint,
 		VerifyOrderFromChainEndpoint: verifyorderfromchainEndpoint,
 		CleanExpiredVpnLinkEndpoint:  cleanexpiredvpnlinkEndpoint,
+		GetVpnConfigEndpoint:         getvpnconfigEndpoint,
 	}
 
 	// Wrap selected Endpoints with middlewares. See handlers/middlewares.go

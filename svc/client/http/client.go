@@ -141,6 +141,16 @@ func New(instance string, options ...httptransport.ClientOption) (pb.VpnsvcServe
 			options...,
 		).Endpoint()
 	}
+	var GetVpnConfigZeroEndpoint endpoint.Endpoint
+	{
+		GetVpnConfigZeroEndpoint = httptransport.NewClient(
+			"GET",
+			copyURL(u, "/get_vpn_config/"),
+			EncodeHTTPGetVpnConfigZeroRequest,
+			DecodeHTTPGetVpnConfigResponse,
+			options...,
+		).Endpoint()
+	}
 
 	return svc.Endpoints{
 		CreateOrderEndpoint:          CreateOrderZeroEndpoint,
@@ -152,6 +162,7 @@ func New(instance string, options ...httptransport.ClientOption) (pb.VpnsvcServe
 		GetServerLinkEndpoint:        GetServerLinkZeroEndpoint,
 		VerifyOrderFromChainEndpoint: VerifyOrderFromChainZeroEndpoint,
 		CleanExpiredVpnLinkEndpoint:  CleanExpiredVpnLinkZeroEndpoint,
+		GetVpnConfigEndpoint:         GetVpnConfigZeroEndpoint,
 	}, nil
 }
 
@@ -414,6 +425,33 @@ func DecodeHTTPCleanExpiredVpnLinkResponse(_ context.Context, r *http.Response) 
 	}
 
 	var resp pb.CleanExpiredVpnLinkResponse
+	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
+		return nil, errorDecoder(buf)
+	}
+
+	return &resp, nil
+}
+
+// DecodeHTTPGetVpnConfigResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded GetVpnConfigResponse response from the HTTP response body.
+// If the response has a non-200 status code, we will interpret that as an
+// error and attempt to decode the specific error message from the response
+// body. Primarily useful in a client.
+func DecodeHTTPGetVpnConfigResponse(_ context.Context, r *http.Response) (interface{}, error) {
+	defer r.Body.Close()
+	buf, err := ioutil.ReadAll(r.Body)
+	if err == io.EOF {
+		return nil, errors.New("response http body empty")
+	}
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot read http body")
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, errors.Wrapf(errorDecoder(buf), "status code: '%d'", r.StatusCode)
+	}
+
+	var resp pb.GetVpnConfigResponse
 	if err = jsonpb.UnmarshalString(string(buf), &resp); err != nil {
 		return nil, errorDecoder(buf)
 	}
@@ -1129,6 +1167,73 @@ func EncodeHTTPCleanExpiredVpnLinkOneRequest(_ context.Context, r *http.Request,
 	_ = tmp
 
 	values.Add("endTime", fmt.Sprint(req.EndTime))
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetVpnConfigZeroRequest is a transport/http.EncodeRequestFunc
+// that encodes a getvpnconfig request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetVpnConfigZeroRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetVpnConfigRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"get_vpn_config",
+		"",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
+
+	r.URL.RawQuery = values.Encode()
+	return nil
+}
+
+// EncodeHTTPGetVpnConfigOneRequest is a transport/http.EncodeRequestFunc
+// that encodes a getvpnconfig request into the various portions of
+// the http request (path, query, and body).
+func EncodeHTTPGetVpnConfigOneRequest(_ context.Context, r *http.Request, request interface{}) error {
+	strval := ""
+	_ = strval
+	req := request.(*pb.GetVpnConfigRequest)
+	_ = req
+
+	r.Header.Set("transport", "HTTPJSON")
+	r.Header.Set("request-url", r.URL.Path)
+
+	// Set the path parameters
+	path := strings.Join([]string{
+		"",
+		"get_vpn_config",
+	}, "/")
+	u, err := url.Parse(path)
+	if err != nil {
+		return errors.Wrapf(err, "couldn't unmarshal path %q", path)
+	}
+	r.URL.RawPath = u.RawPath
+	r.URL.Path = u.Path
+
+	// Set the query parameters
+	values := r.URL.Query()
+	var tmp []byte
+	_ = tmp
 
 	r.URL.RawQuery = values.Encode()
 	return nil

@@ -102,6 +102,37 @@ rpc CleanExpiredVpnLink (CleanExpiredVpnLinkRequest) returns (CleanExpiredVpnLin
   };
 }
 
+rpc GetVpnConfig (GetVpnConfigRequest) returns (GetVpnConfigResponse) {
+  option (google.api.http) = {
+    get: "/get_vpn_config"
+    additional_bindings {
+      get: "/get_vpn_config/"
+    }
+  };
+}
+
+}
+
+message GetVpnConfigRequest {
+
+}
+
+message VpnChain {
+    uint64 chainID = 1;
+    string tokenAddress = 2;
+    string contractAddress = 3;
+}
+
+message GetVpnConfigResult {
+    int64 priceInUsdt = 1;
+    string strContractABI = 2;
+    repeated VpnChain purchaseConfigOnChain = 3;
+}
+
+message GetVpnConfigResponse {
+    uint64 code = 1;
+    GetVpnConfigResult data = 2;
+    string error = 3;
 }
 
 message CleanExpiredVpnLinkRequest {

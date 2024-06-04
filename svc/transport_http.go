@@ -174,6 +174,19 @@ func MakeHTTPHandler(endpoints Endpoints, responseEncoder httptransport.EncodeRe
 		responseEncoder,
 		serverOptions...,
 	))
+
+	m.Methods("GET").Path("/get_vpn_config/").Handler(httptransport.NewServer(
+		endpoints.GetVpnConfigEndpoint,
+		DecodeHTTPGetVpnConfigZeroRequest,
+		responseEncoder,
+		serverOptions...,
+	))
+	m.Methods("GET").Path("/get_vpn_config").Handler(httptransport.NewServer(
+		endpoints.GetVpnConfigEndpoint,
+		DecodeHTTPGetVpnConfigOneRequest,
+		responseEncoder,
+		serverOptions...,
+	))
 	return m
 }
 
@@ -1009,6 +1022,78 @@ func DecodeHTTPCleanExpiredVpnLinkOneRequest(_ context.Context, r *http.Request)
 		}
 		req.EndTime = EndTimeCleanExpiredVpnLink
 	}
+
+	return &req, err
+}
+
+// DecodeHTTPGetVpnConfigZeroRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getvpnconfig request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetVpnConfigZeroRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetVpnConfigRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
+
+	return &req, err
+}
+
+// DecodeHTTPGetVpnConfigOneRequest is a transport/http.DecodeRequestFunc that
+// decodes a JSON-encoded getvpnconfig request from the HTTP request
+// body. Primarily useful in a server.
+func DecodeHTTPGetVpnConfigOneRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	defer r.Body.Close()
+	var req pb.GetVpnConfigRequest
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot read body of http request")
+	}
+	if len(buf) > 0 {
+		// AllowUnknownFields stops the unmarshaler from failing if the JSON contains unknown fields.
+		unmarshaller := jsonpb.Unmarshaler{
+			AllowUnknownFields: true,
+		}
+		if err = unmarshaller.Unmarshal(bytes.NewBuffer(buf), &req); err != nil {
+			const size = 8196
+			if len(buf) > size {
+				buf = buf[:size]
+			}
+			return nil, httpError{errors.Wrapf(err, "request body '%s': cannot parse non-json request body", buf),
+				http.StatusBadRequest,
+				nil,
+			}
+		}
+	}
+
+	pathParams := encodePathParams(mux.Vars(r))
+	_ = pathParams
+
+	queryParams := r.URL.Query()
+	_ = queryParams
 
 	return &req, err
 }

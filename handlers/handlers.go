@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/mises-id/mises-vpnsvc/app/models"
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
+	"github.com/mises-id/mises-vpnsvc/app/services"
 	"github.com/mises-id/mises-vpnsvc/app/services/chain"
 	"github.com/mises-id/mises-vpnsvc/app/services/order"
 	"github.com/mises-id/mises-vpnsvc/app/services/vpn"
@@ -236,5 +237,16 @@ func (s vpnsvcService) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpi
 	}
 	var resp pb.CleanExpiredVpnLinkResponse
 	resp.Code = 0
+	return &resp, nil
+}
+
+func (s vpnsvcService) GetVpnConfig(ctx context.Context, in *pb.GetVpnConfigRequest) (*pb.GetVpnConfigResponse, error) {
+	config, err := services.GetVpnConfig()
+	if err != nil {
+		return nil, err
+	}
+	var resp pb.GetVpnConfigResponse
+	resp.Code = 0
+	resp.Data = config
 	return &resp, nil
 }

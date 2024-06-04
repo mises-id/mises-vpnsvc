@@ -83,6 +83,12 @@ func MakeGRPCServer(endpoints Endpoints, options ...grpctransport.ServerOption) 
 			EncodeGRPCCleanExpiredVpnLinkResponse,
 			serverOptions...,
 		),
+		getvpnconfig: grpctransport.NewServer(
+			endpoints.GetVpnConfigEndpoint,
+			DecodeGRPCGetVpnConfigRequest,
+			EncodeGRPCGetVpnConfigResponse,
+			serverOptions...,
+		),
 	}
 }
 
@@ -97,6 +103,7 @@ type grpcServer struct {
 	getserverlink        grpctransport.Handler
 	verifyorderfromchain grpctransport.Handler
 	cleanexpiredvpnlink  grpctransport.Handler
+	getvpnconfig         grpctransport.Handler
 }
 
 // Methods for grpcServer to implement VpnsvcServer interface
@@ -173,6 +180,14 @@ func (s *grpcServer) CleanExpiredVpnLink(ctx context.Context, req *pb.CleanExpir
 	return rep.(*pb.CleanExpiredVpnLinkResponse), nil
 }
 
+func (s *grpcServer) GetVpnConfig(ctx context.Context, req *pb.GetVpnConfigRequest) (*pb.GetVpnConfigResponse, error) {
+	_, rep, err := s.getvpnconfig.ServeGRPC(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return rep.(*pb.GetVpnConfigResponse), nil
+}
+
 // Server Decode
 
 // DecodeGRPCCreateOrderRequest is a transport/grpc.DecodeRequestFunc that converts a
@@ -238,6 +253,13 @@ func DecodeGRPCCleanExpiredVpnLinkRequest(_ context.Context, grpcReq interface{}
 	return req, nil
 }
 
+// DecodeGRPCGetVpnConfigRequest is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC getvpnconfig request to a user-domain getvpnconfig request. Primarily useful in a server.
+func DecodeGRPCGetVpnConfigRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
+	req := grpcReq.(*pb.GetVpnConfigRequest)
+	return req, nil
+}
+
 // Server Encode
 
 // EncodeGRPCCreateOrderResponse is a transport/grpc.EncodeResponseFunc that converts a
@@ -300,6 +322,13 @@ func EncodeGRPCVerifyOrderFromChainResponse(_ context.Context, response interfac
 // user-domain cleanexpiredvpnlink response to a gRPC cleanexpiredvpnlink reply. Primarily useful in a server.
 func EncodeGRPCCleanExpiredVpnLinkResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(*pb.CleanExpiredVpnLinkResponse)
+	return resp, nil
+}
+
+// EncodeGRPCGetVpnConfigResponse is a transport/grpc.EncodeResponseFunc that converts a
+// user-domain getvpnconfig response to a gRPC getvpnconfig reply. Primarily useful in a server.
+func EncodeGRPCGetVpnConfigResponse(_ context.Context, response interface{}) (interface{}, error) {
+	resp := response.(*pb.GetVpnConfigResponse)
 	return resp, nil
 }
 

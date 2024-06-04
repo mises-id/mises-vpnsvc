@@ -30,6 +30,222 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
+type GetVpnConfigRequest struct {
+}
+
+func (m *GetVpnConfigRequest) Reset()         { *m = GetVpnConfigRequest{} }
+func (m *GetVpnConfigRequest) String() string { return proto.CompactTextString(m) }
+func (*GetVpnConfigRequest) ProtoMessage()    {}
+func (*GetVpnConfigRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6ab4ab7bd676c232, []int{0}
+}
+func (m *GetVpnConfigRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetVpnConfigRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetVpnConfigRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetVpnConfigRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetVpnConfigRequest.Merge(m, src)
+}
+func (m *GetVpnConfigRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetVpnConfigRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetVpnConfigRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetVpnConfigRequest proto.InternalMessageInfo
+
+type VpnChain struct {
+	ChainID         uint64 `protobuf:"varint,1,opt,name=chainID,proto3" json:"chainID,omitempty"`
+	TokenAddress    string `protobuf:"bytes,2,opt,name=tokenAddress,proto3" json:"tokenAddress,omitempty"`
+	ContractAddress string `protobuf:"bytes,3,opt,name=contractAddress,proto3" json:"contractAddress,omitempty"`
+}
+
+func (m *VpnChain) Reset()         { *m = VpnChain{} }
+func (m *VpnChain) String() string { return proto.CompactTextString(m) }
+func (*VpnChain) ProtoMessage()    {}
+func (*VpnChain) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6ab4ab7bd676c232, []int{1}
+}
+func (m *VpnChain) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *VpnChain) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_VpnChain.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *VpnChain) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VpnChain.Merge(m, src)
+}
+func (m *VpnChain) XXX_Size() int {
+	return m.Size()
+}
+func (m *VpnChain) XXX_DiscardUnknown() {
+	xxx_messageInfo_VpnChain.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VpnChain proto.InternalMessageInfo
+
+func (m *VpnChain) GetChainID() uint64 {
+	if m != nil {
+		return m.ChainID
+	}
+	return 0
+}
+
+func (m *VpnChain) GetTokenAddress() string {
+	if m != nil {
+		return m.TokenAddress
+	}
+	return ""
+}
+
+func (m *VpnChain) GetContractAddress() string {
+	if m != nil {
+		return m.ContractAddress
+	}
+	return ""
+}
+
+type GetVpnConfigResult struct {
+	PriceInUsdt           int64       `protobuf:"varint,1,opt,name=priceInUsdt,proto3" json:"priceInUsdt,omitempty"`
+	StrContractABI        string      `protobuf:"bytes,2,opt,name=strContractABI,proto3" json:"strContractABI,omitempty"`
+	PurchaseConfigOnChain []*VpnChain `protobuf:"bytes,3,rep,name=purchaseConfigOnChain,proto3" json:"purchaseConfigOnChain,omitempty"`
+}
+
+func (m *GetVpnConfigResult) Reset()         { *m = GetVpnConfigResult{} }
+func (m *GetVpnConfigResult) String() string { return proto.CompactTextString(m) }
+func (*GetVpnConfigResult) ProtoMessage()    {}
+func (*GetVpnConfigResult) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6ab4ab7bd676c232, []int{2}
+}
+func (m *GetVpnConfigResult) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetVpnConfigResult) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetVpnConfigResult.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetVpnConfigResult) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetVpnConfigResult.Merge(m, src)
+}
+func (m *GetVpnConfigResult) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetVpnConfigResult) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetVpnConfigResult.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetVpnConfigResult proto.InternalMessageInfo
+
+func (m *GetVpnConfigResult) GetPriceInUsdt() int64 {
+	if m != nil {
+		return m.PriceInUsdt
+	}
+	return 0
+}
+
+func (m *GetVpnConfigResult) GetStrContractABI() string {
+	if m != nil {
+		return m.StrContractABI
+	}
+	return ""
+}
+
+func (m *GetVpnConfigResult) GetPurchaseConfigOnChain() []*VpnChain {
+	if m != nil {
+		return m.PurchaseConfigOnChain
+	}
+	return nil
+}
+
+type GetVpnConfigResponse struct {
+	Code  uint64              `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Data  *GetVpnConfigResult `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Error string              `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (m *GetVpnConfigResponse) Reset()         { *m = GetVpnConfigResponse{} }
+func (m *GetVpnConfigResponse) String() string { return proto.CompactTextString(m) }
+func (*GetVpnConfigResponse) ProtoMessage()    {}
+func (*GetVpnConfigResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6ab4ab7bd676c232, []int{3}
+}
+func (m *GetVpnConfigResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetVpnConfigResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetVpnConfigResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetVpnConfigResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetVpnConfigResponse.Merge(m, src)
+}
+func (m *GetVpnConfigResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetVpnConfigResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetVpnConfigResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetVpnConfigResponse proto.InternalMessageInfo
+
+func (m *GetVpnConfigResponse) GetCode() uint64 {
+	if m != nil {
+		return m.Code
+	}
+	return 0
+}
+
+func (m *GetVpnConfigResponse) GetData() *GetVpnConfigResult {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+func (m *GetVpnConfigResponse) GetError() string {
+	if m != nil {
+		return m.Error
+	}
+	return ""
+}
+
 type CleanExpiredVpnLinkRequest struct {
 	EndTime int64 `protobuf:"varint,1,opt,name=endTime,proto3" json:"endTime,omitempty"`
 }
@@ -38,7 +254,7 @@ func (m *CleanExpiredVpnLinkRequest) Reset()         { *m = CleanExpiredVpnLinkR
 func (m *CleanExpiredVpnLinkRequest) String() string { return proto.CompactTextString(m) }
 func (*CleanExpiredVpnLinkRequest) ProtoMessage()    {}
 func (*CleanExpiredVpnLinkRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{0}
+	return fileDescriptor_6ab4ab7bd676c232, []int{4}
 }
 func (m *CleanExpiredVpnLinkRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -83,7 +299,7 @@ func (m *CleanExpiredVpnLinkResponse) Reset()         { *m = CleanExpiredVpnLink
 func (m *CleanExpiredVpnLinkResponse) String() string { return proto.CompactTextString(m) }
 func (*CleanExpiredVpnLinkResponse) ProtoMessage()    {}
 func (*CleanExpiredVpnLinkResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{1}
+	return fileDescriptor_6ab4ab7bd676c232, []int{5}
 }
 func (m *CleanExpiredVpnLinkResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -135,7 +351,7 @@ func (m *VerifyOrderFromChainRequest) Reset()         { *m = VerifyOrderFromChai
 func (m *VerifyOrderFromChainRequest) String() string { return proto.CompactTextString(m) }
 func (*VerifyOrderFromChainRequest) ProtoMessage()    {}
 func (*VerifyOrderFromChainRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{2}
+	return fileDescriptor_6ab4ab7bd676c232, []int{6}
 }
 func (m *VerifyOrderFromChainRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -187,7 +403,7 @@ func (m *VerifyOrderFromChainResponse) Reset()         { *m = VerifyOrderFromCha
 func (m *VerifyOrderFromChainResponse) String() string { return proto.CompactTextString(m) }
 func (*VerifyOrderFromChainResponse) ProtoMessage()    {}
 func (*VerifyOrderFromChainResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{3}
+	return fileDescriptor_6ab4ab7bd676c232, []int{7}
 }
 func (m *VerifyOrderFromChainResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -238,7 +454,7 @@ func (m *GetServerListRequest) Reset()         { *m = GetServerListRequest{} }
 func (m *GetServerListRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServerListRequest) ProtoMessage()    {}
 func (*GetServerListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{4}
+	return fileDescriptor_6ab4ab7bd676c232, []int{8}
 }
 func (m *GetServerListRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -283,7 +499,7 @@ func (m *GetServerListItem) Reset()         { *m = GetServerListItem{} }
 func (m *GetServerListItem) String() string { return proto.CompactTextString(m) }
 func (*GetServerListItem) ProtoMessage()    {}
 func (*GetServerListItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{5}
+	return fileDescriptor_6ab4ab7bd676c232, []int{9}
 }
 func (m *GetServerListItem) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -334,7 +550,7 @@ func (m *GetServerListResult) Reset()         { *m = GetServerListResult{} }
 func (m *GetServerListResult) String() string { return proto.CompactTextString(m) }
 func (*GetServerListResult) ProtoMessage()    {}
 func (*GetServerListResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{6}
+	return fileDescriptor_6ab4ab7bd676c232, []int{10}
 }
 func (m *GetServerListResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -380,7 +596,7 @@ func (m *GetServerListResponse) Reset()         { *m = GetServerListResponse{} }
 func (m *GetServerListResponse) String() string { return proto.CompactTextString(m) }
 func (*GetServerListResponse) ProtoMessage()    {}
 func (*GetServerListResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{7}
+	return fileDescriptor_6ab4ab7bd676c232, []int{11}
 }
 func (m *GetServerListResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -439,7 +655,7 @@ func (m *GetServerLinkRequest) Reset()         { *m = GetServerLinkRequest{} }
 func (m *GetServerLinkRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServerLinkRequest) ProtoMessage()    {}
 func (*GetServerLinkRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{8}
+	return fileDescriptor_6ab4ab7bd676c232, []int{12}
 }
 func (m *GetServerLinkRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -492,7 +708,7 @@ func (m *GetServerLinkResponse) Reset()         { *m = GetServerLinkResponse{} }
 func (m *GetServerLinkResponse) String() string { return proto.CompactTextString(m) }
 func (*GetServerLinkResponse) ProtoMessage()    {}
 func (*GetServerLinkResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{9}
+	return fileDescriptor_6ab4ab7bd676c232, []int{13}
 }
 func (m *GetServerLinkResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -550,7 +766,7 @@ func (m *VpnInfoRequest) Reset()         { *m = VpnInfoRequest{} }
 func (m *VpnInfoRequest) String() string { return proto.CompactTextString(m) }
 func (*VpnInfoRequest) ProtoMessage()    {}
 func (*VpnInfoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{10}
+	return fileDescriptor_6ab4ab7bd676c232, []int{14}
 }
 func (m *VpnInfoRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -594,7 +810,7 @@ func (m *Subscription) Reset()         { *m = Subscription{} }
 func (m *Subscription) String() string { return proto.CompactTextString(m) }
 func (*Subscription) ProtoMessage()    {}
 func (*Subscription) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{11}
+	return fileDescriptor_6ab4ab7bd676c232, []int{15}
 }
 func (m *Subscription) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -644,7 +860,7 @@ func (m *VpnOrder) Reset()         { *m = VpnOrder{} }
 func (m *VpnOrder) String() string { return proto.CompactTextString(m) }
 func (*VpnOrder) ProtoMessage()    {}
 func (*VpnOrder) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{12}
+	return fileDescriptor_6ab4ab7bd676c232, []int{16}
 }
 func (m *VpnOrder) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -732,7 +948,7 @@ func (m *VpnInfoResult) Reset()         { *m = VpnInfoResult{} }
 func (m *VpnInfoResult) String() string { return proto.CompactTextString(m) }
 func (*VpnInfoResult) ProtoMessage()    {}
 func (*VpnInfoResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{13}
+	return fileDescriptor_6ab4ab7bd676c232, []int{17}
 }
 func (m *VpnInfoResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -792,7 +1008,7 @@ func (m *VpnInfoResponse) Reset()         { *m = VpnInfoResponse{} }
 func (m *VpnInfoResponse) String() string { return proto.CompactTextString(m) }
 func (*VpnInfoResponse) ProtoMessage()    {}
 func (*VpnInfoResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{14}
+	return fileDescriptor_6ab4ab7bd676c232, []int{18}
 }
 func (m *VpnInfoResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -850,7 +1066,7 @@ func (m *FetchOrdersRequest) Reset()         { *m = FetchOrdersRequest{} }
 func (m *FetchOrdersRequest) String() string { return proto.CompactTextString(m) }
 func (*FetchOrdersRequest) ProtoMessage()    {}
 func (*FetchOrdersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{15}
+	return fileDescriptor_6ab4ab7bd676c232, []int{19}
 }
 func (m *FetchOrdersRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -896,7 +1112,7 @@ func (m *FetchOrdersResponse) Reset()         { *m = FetchOrdersResponse{} }
 func (m *FetchOrdersResponse) String() string { return proto.CompactTextString(m) }
 func (*FetchOrdersResponse) ProtoMessage()    {}
 func (*FetchOrdersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{16}
+	return fileDescriptor_6ab4ab7bd676c232, []int{20}
 }
 func (m *FetchOrdersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -955,7 +1171,7 @@ func (m *FetchOrderInfoRequest) Reset()         { *m = FetchOrderInfoRequest{} }
 func (m *FetchOrderInfoRequest) String() string { return proto.CompactTextString(m) }
 func (*FetchOrderInfoRequest) ProtoMessage()    {}
 func (*FetchOrderInfoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{17}
+	return fileDescriptor_6ab4ab7bd676c232, []int{21}
 }
 func (m *FetchOrderInfoRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1008,7 +1224,7 @@ func (m *FetchOrderInfoResponse) Reset()         { *m = FetchOrderInfoResponse{}
 func (m *FetchOrderInfoResponse) String() string { return proto.CompactTextString(m) }
 func (*FetchOrderInfoResponse) ProtoMessage()    {}
 func (*FetchOrderInfoResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{18}
+	return fileDescriptor_6ab4ab7bd676c232, []int{22}
 }
 func (m *FetchOrderInfoResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1066,7 +1282,7 @@ func (m *CreateOrderResult) Reset()         { *m = CreateOrderResult{} }
 func (m *CreateOrderResult) String() string { return proto.CompactTextString(m) }
 func (*CreateOrderResult) ProtoMessage()    {}
 func (*CreateOrderResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{19}
+	return fileDescriptor_6ab4ab7bd676c232, []int{23}
 }
 func (m *CreateOrderResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1112,7 +1328,7 @@ func (m *CreateOrderRequest) Reset()         { *m = CreateOrderRequest{} }
 func (m *CreateOrderRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateOrderRequest) ProtoMessage()    {}
 func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{20}
+	return fileDescriptor_6ab4ab7bd676c232, []int{24}
 }
 func (m *CreateOrderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1172,7 +1388,7 @@ func (m *CreateOrderResponse) Reset()         { *m = CreateOrderResponse{} }
 func (m *CreateOrderResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateOrderResponse) ProtoMessage()    {}
 func (*CreateOrderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{21}
+	return fileDescriptor_6ab4ab7bd676c232, []int{25}
 }
 func (m *CreateOrderResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1230,7 +1446,7 @@ func (m *UpdateOrderResult) Reset()         { *m = UpdateOrderResult{} }
 func (m *UpdateOrderResult) String() string { return proto.CompactTextString(m) }
 func (*UpdateOrderResult) ProtoMessage()    {}
 func (*UpdateOrderResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{22}
+	return fileDescriptor_6ab4ab7bd676c232, []int{26}
 }
 func (m *UpdateOrderResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1276,7 +1492,7 @@ func (m *UpdateOrderRequest) Reset()         { *m = UpdateOrderRequest{} }
 func (m *UpdateOrderRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateOrderRequest) ProtoMessage()    {}
 func (*UpdateOrderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{23}
+	return fileDescriptor_6ab4ab7bd676c232, []int{27}
 }
 func (m *UpdateOrderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1336,7 +1552,7 @@ func (m *UpdateOrderResponse) Reset()         { *m = UpdateOrderResponse{} }
 func (m *UpdateOrderResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateOrderResponse) ProtoMessage()    {}
 func (*UpdateOrderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_6ab4ab7bd676c232, []int{24}
+	return fileDescriptor_6ab4ab7bd676c232, []int{28}
 }
 func (m *UpdateOrderResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1387,6 +1603,10 @@ func (m *UpdateOrderResponse) GetError() string {
 }
 
 func init() {
+	proto.RegisterType((*GetVpnConfigRequest)(nil), "vpnsvc.GetVpnConfigRequest")
+	proto.RegisterType((*VpnChain)(nil), "vpnsvc.VpnChain")
+	proto.RegisterType((*GetVpnConfigResult)(nil), "vpnsvc.GetVpnConfigResult")
+	proto.RegisterType((*GetVpnConfigResponse)(nil), "vpnsvc.GetVpnConfigResponse")
 	proto.RegisterType((*CleanExpiredVpnLinkRequest)(nil), "vpnsvc.CleanExpiredVpnLinkRequest")
 	proto.RegisterType((*CleanExpiredVpnLinkResponse)(nil), "vpnsvc.CleanExpiredVpnLinkResponse")
 	proto.RegisterType((*VerifyOrderFromChainRequest)(nil), "vpnsvc.VerifyOrderFromChainRequest")
@@ -1417,76 +1637,86 @@ func init() {
 func init() { proto.RegisterFile("vpnsvc.proto", fileDescriptor_6ab4ab7bd676c232) }
 
 var fileDescriptor_6ab4ab7bd676c232 = []byte{
-	// 1093 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x57, 0xcf, 0x6f, 0xe3, 0x44,
-	0x14, 0xae, 0x9b, 0xe6, 0x47, 0x5f, 0xd2, 0x2c, 0x9d, 0xa4, 0x6d, 0x36, 0xd9, 0x86, 0xd5, 0x74,
-	0x11, 0x65, 0x51, 0x6b, 0xd4, 0xc2, 0x02, 0xcb, 0x89, 0xad, 0xf6, 0x47, 0xd1, 0x0a, 0x84, 0xcb,
-	0xe6, 0x90, 0x4b, 0xe4, 0xda, 0x93, 0xc6, 0x4a, 0x32, 0x36, 0x33, 0x93, 0x68, 0x7b, 0xe5, 0xca,
-	0x05, 0x89, 0x23, 0xfc, 0x25, 0xfc, 0x05, 0x5c, 0x90, 0x56, 0xe2, 0xc2, 0x11, 0xb5, 0xfc, 0x21,
-	0xc8, 0x33, 0x76, 0x6c, 0x27, 0x76, 0xb6, 0xd5, 0xde, 0xfc, 0x66, 0xde, 0xcc, 0xf7, 0xbd, 0x2f,
-	0xdf, 0x3c, 0xbd, 0x40, 0x65, 0xea, 0x51, 0x3e, 0xb5, 0x0e, 0x3d, 0xe6, 0x0a, 0x17, 0x15, 0x54,
-	0xd4, 0x7c, 0x7a, 0xe1, 0x88, 0xc1, 0xe4, 0xfc, 0xd0, 0x72, 0xc7, 0xfa, 0x98, 0x08, 0x73, 0x4a,
-	0x18, 0x27, 0xba, 0x60, 0x13, 0xce, 0x75, 0x9b, 0xf4, 0x05, 0x23, 0x44, 0xbf, 0x70, 0xdd, 0x8b,
-	0x11, 0x11, 0x03, 0x87, 0xd9, 0x9e, 0xc9, 0xc4, 0xa5, 0x6e, 0x52, 0xea, 0x0a, 0x53, 0x38, 0x2e,
-	0xe5, 0xea, 0x3a, 0xfc, 0x08, 0x9a, 0x27, 0x23, 0x62, 0xd2, 0xa7, 0xaf, 0x3d, 0x87, 0x11, 0xbb,
-	0xe3, 0xd1, 0x97, 0x0e, 0x1d, 0x1a, 0xe4, 0xc7, 0x09, 0xe1, 0x02, 0x35, 0xa0, 0x48, 0xa8, 0xfd,
-	0x83, 0x33, 0x26, 0x0d, 0xed, 0xbe, 0xb6, 0x9f, 0x33, 0xc2, 0x10, 0x3f, 0x87, 0x56, 0xea, 0x39,
-	0xee, 0xb9, 0x94, 0x13, 0x84, 0x60, 0xcd, 0x72, 0x6d, 0x75, 0x6a, 0xcd, 0x90, 0xdf, 0xa8, 0x0e,
-	0x79, 0xc2, 0x98, 0xcb, 0x1a, 0xab, 0xf7, 0xb5, 0xfd, 0x75, 0x43, 0x05, 0xf8, 0x0c, 0x5a, 0x1d,
-	0xc2, 0x9c, 0xfe, 0xe5, 0x77, 0xcc, 0x26, 0xec, 0x19, 0x73, 0xc7, 0x27, 0x03, 0xd3, 0xa1, 0x21,
-	0x83, 0x3a, 0xe4, 0x2d, 0x3f, 0x0e, 0x6e, 0x52, 0x01, 0x6a, 0x03, 0x70, 0x61, 0x32, 0xf1, 0x64,
-	0xe4, 0x5a, 0x43, 0x79, 0x5f, 0xce, 0x88, 0xad, 0xe0, 0x17, 0x70, 0x2f, 0xfd, 0xd2, 0x5b, 0xd3,
-	0x7b, 0x04, 0xf5, 0xe7, 0x44, 0x9c, 0x11, 0x36, 0x25, 0xec, 0xa5, 0xc3, 0x45, 0xc8, 0xab, 0x0d,
-	0x40, 0xc4, 0xe0, 0x6b, 0xdb, 0x66, 0x84, 0x73, 0x79, 0xcf, 0xba, 0x11, 0x5b, 0xc1, 0x9f, 0xc3,
-	0x66, 0xe2, 0xdc, 0xa9, 0x20, 0x63, 0x54, 0x85, 0x55, 0xc7, 0x0b, 0x92, 0x57, 0x1d, 0xcf, 0xa7,
-	0x41, 0xcd, 0x31, 0x09, 0x10, 0xe5, 0x37, 0xfe, 0x06, 0x6a, 0x73, 0x80, 0x7c, 0x32, 0x12, 0xe8,
-	0x18, 0x8a, 0x5c, 0xae, 0xf9, 0x60, 0xb9, 0xfd, 0xf2, 0xd1, 0xdd, 0xc3, 0xc0, 0x16, 0x0b, 0x30,
-	0x46, 0x98, 0x89, 0x19, 0x6c, 0xcd, 0xdf, 0x95, 0x5d, 0xbf, 0x0e, 0x6b, 0xb6, 0x29, 0x4c, 0x49,
-	0xa6, 0x7c, 0xd4, 0x4a, 0xbd, 0x5e, 0x91, 0x31, 0x64, 0x62, 0x24, 0x58, 0x2e, 0x2e, 0xd8, 0xb7,
-	0x09, 0xc1, 0x22, 0x2b, 0xbd, 0x45, 0x30, 0xb4, 0x0d, 0x05, 0x45, 0x3b, 0x50, 0x23, 0x88, 0xf0,
-	0xab, 0x44, 0x0d, 0x6f, 0xb1, 0x18, 0x8a, 0xd5, 0xb0, 0xbe, 0x94, 0xe6, 0x27, 0x50, 0xed, 0x78,
-	0xf4, 0x94, 0xf6, 0xdd, 0x9b, 0xfe, 0xa2, 0x87, 0x50, 0x39, 0x9b, 0x9c, 0x73, 0x8b, 0x39, 0x9e,
-	0xff, 0x80, 0x64, 0xbe, 0x34, 0xff, 0xec, 0x79, 0xf8, 0xf9, 0xb3, 0x15, 0xfc, 0x87, 0x06, 0xa5,
-	0x8e, 0x47, 0xa5, 0x03, 0xfd, 0x87, 0xe4, 0xfa, 0x1f, 0xa7, 0x76, 0x90, 0x19, 0x86, 0xb2, 0x6e,
-	0x61, 0x8a, 0x09, 0x9f, 0xd5, 0x2d, 0x23, 0x7f, 0xdd, 0x1c, 0xbb, 0x13, 0x2a, 0x02, 0xde, 0x41,
-	0x14, 0x3d, 0x88, 0x35, 0x55, 0x8e, 0x7a, 0x10, 0x75, 0xc8, 0x0b, 0x77, 0x48, 0x68, 0x23, 0xaf,
-	0x56, 0x65, 0xe0, 0xa3, 0x8a, 0xd7, 0xf4, 0x85, 0xc9, 0x07, 0x8d, 0x82, 0x42, 0x0d, 0x42, 0x9f,
-	0xbc, 0xc5, 0x88, 0x29, 0x14, 0xf9, 0xa2, 0x22, 0x1f, 0xad, 0xe0, 0x9f, 0x35, 0xd8, 0x98, 0xe9,
-	0x23, 0x0d, 0x18, 0xf1, 0x54, 0x82, 0x87, 0x3c, 0xbf, 0x80, 0x0a, 0x8f, 0xc9, 0x12, 0xd8, 0xa7,
-	0x1e, 0xda, 0x27, 0x2e, 0x99, 0x91, 0xc8, 0x44, 0xfb, 0x50, 0x90, 0x22, 0xf0, 0x46, 0x4e, 0x3a,
-	0xfa, 0xbd, 0xf0, 0x4c, 0xa8, 0x9a, 0x11, 0xec, 0xe3, 0x3e, 0xdc, 0x89, 0xc8, 0x64, 0xff, 0xfa,
-	0x1f, 0x25, 0x1c, 0xbc, 0x15, 0xbb, 0x2e, 0xaa, 0x63, 0xa9, 0x29, 0x3e, 0x05, 0xf4, 0x8c, 0x08,
-	0x6b, 0x20, 0xd1, 0xf9, 0x4d, 0x8d, 0x41, 0xa0, 0x96, 0x38, 0xb5, 0x84, 0xe1, 0x83, 0x19, 0xc3,
-	0xf4, 0x82, 0x97, 0x91, 0xfb, 0x1e, 0xb6, 0x22, 0x98, 0x5b, 0x18, 0x37, 0xee, 0xbd, 0xd5, 0x84,
-	0xf7, 0xf0, 0x00, 0xb6, 0xe7, 0xaf, 0xbc, 0x11, 0x79, 0xed, 0xd6, 0xe4, 0x0f, 0x60, 0xf3, 0x44,
-	0xba, 0x4b, 0xa5, 0x2a, 0x4b, 0x65, 0x3e, 0x0a, 0xdc, 0x07, 0x94, 0x48, 0xbf, 0x71, 0xa1, 0xf2,
-	0x35, 0x04, 0x85, 0xae, 0x19, 0x61, 0xe8, 0x9b, 0xd7, 0x1b, 0x99, 0xfe, 0x46, 0x4e, 0x99, 0x57,
-	0x45, 0x98, 0x42, 0x2d, 0x49, 0x2b, 0xbb, 0xfa, 0x83, 0x44, 0xf5, 0xb3, 0xee, 0xbb, 0x50, 0xd5,
-	0x52, 0x19, 0x3e, 0x86, 0xcd, 0x57, 0x9e, 0x3d, 0x27, 0x43, 0xf2, 0x65, 0x95, 0xc2, 0x97, 0x85,
-	0x07, 0x80, 0x12, 0xc9, 0xef, 0xf8, 0x6b, 0xc7, 0xbb, 0x41, 0x2e, 0xd1, 0x0d, 0x7c, 0x19, 0x92,
-	0xb4, 0x6e, 0x2d, 0xc3, 0x42, 0x55, 0xcb, 0x64, 0x38, 0xfa, 0xab, 0x04, 0x85, 0x8e, 0x3c, 0x88,
-	0x26, 0x50, 0x8e, 0x49, 0x88, 0x9a, 0xa9, 0xba, 0xca, 0xca, 0x9b, 0xad, 0x74, 0xcd, 0x25, 0x57,
-	0x7c, 0xf0, 0xd3, 0xdf, 0xff, 0xfd, 0xba, 0xfa, 0x21, 0xde, 0xd0, 0x65, 0xb9, 0xba, 0xea, 0x65,
-	0x8f, 0xb5, 0x87, 0xdd, 0x1a, 0xae, 0x26, 0xd6, 0xf4, 0xc7, 0xda, 0x43, 0x1f, 0x36, 0x46, 0x39,
-	0x82, 0x5d, 0x14, 0x3c, 0x82, 0x4d, 0x91, 0x68, 0x01, 0x76, 0x22, 0x73, 0x92, 0xb0, 0x6a, 0x4d,
-	0xc2, 0x9e, 0x41, 0x31, 0xe8, 0x46, 0x68, 0x7b, 0xa1, 0x3d, 0x29, 0xb8, 0x9d, 0xc5, 0xb6, 0xa5,
-	0xa0, 0x76, 0x24, 0xd4, 0x26, 0xca, 0xeb, 0x0e, 0xed, 0xbb, 0xdd, 0x12, 0x2a, 0xc8, 0x0f, 0x1d,
-	0x59, 0x50, 0x8e, 0xf5, 0x9f, 0xa8, 0x96, 0xc5, 0x56, 0x16, 0xd5, 0x92, 0xd2, 0xb0, 0x70, 0x4b,
-	0x02, 0x6c, 0xa1, 0xa2, 0xe2, 0xcd, 0xbb, 0x80, 0x4a, 0xc1, 0xa7, 0x8e, 0x04, 0x54, 0x93, 0xad,
-	0x02, 0xed, 0x2e, 0xde, 0x15, 0xaf, 0xa3, 0x9d, 0xb5, 0x1d, 0xa0, 0xed, 0x49, 0xb4, 0x5d, 0x54,
-	0x56, 0x10, 0x3d, 0x59, 0x54, 0x15, 0x55, 0x62, 0xa1, 0x8e, 0x38, 0x6c, 0x24, 0xe6, 0x0f, 0x74,
-	0x2f, 0x63, 0x2c, 0x51, 0x98, 0xbb, 0x59, 0x43, 0x8b, 0x82, 0xfc, 0x40, 0x42, 0xbe, 0x8f, 0x2a,
-	0xba, 0x9a, 0x2d, 0x7a, 0x23, 0x87, 0x8b, 0xee, 0x1d, 0xb4, 0x11, 0x8f, 0xe7, 0x41, 0xe9, 0x30,
-	0x15, 0x74, 0x36, 0xd8, 0xa4, 0x82, 0x46, 0x63, 0x4a, 0x1a, 0x28, 0x1d, 0x26, 0x41, 0xe9, 0x50,
-	0x47, 0xbf, 0x6b, 0x50, 0x4f, 0x1b, 0x59, 0xd1, 0xde, 0xcc, 0x0f, 0xd9, 0x53, 0x72, 0xf3, 0xc1,
-	0xf2, 0xa4, 0x80, 0xca, 0x97, 0x92, 0xca, 0x31, 0xda, 0xd6, 0xf9, 0x25, 0xb5, 0x7a, 0x4a, 0xe8,
-	0x3e, 0x73, 0xc7, 0x3d, 0xd9, 0x27, 0xbb, 0x77, 0xd1, 0x4e, 0xfa, 0x8e, 0x8e, 0x7e, 0xd3, 0xa0,
-	0x96, 0x32, 0xef, 0x23, 0x3c, 0x7b, 0x93, 0x99, 0x7f, 0x22, 0x9a, 0x7b, 0x4b, 0x73, 0x02, 0x6e,
-	0x5f, 0x49, 0x6e, 0x9f, 0xa1, 0x1d, 0xdd, 0xf2, 0xb3, 0x7a, 0x6a, 0x90, 0xb2, 0x7b, 0x53, 0x8f,
-	0x2a, 0xc5, 0x9a, 0xa8, 0x91, 0xb1, 0xa5, 0x3f, 0x69, 0xfc, 0x79, 0xd5, 0xd6, 0xde, 0x5c, 0xb5,
-	0xb5, 0x7f, 0xaf, 0xda, 0xda, 0x2f, 0xd7, 0xed, 0x95, 0x37, 0xd7, 0xed, 0x95, 0x7f, 0xae, 0xdb,
-	0x2b, 0xe7, 0x05, 0xf9, 0x2f, 0xe7, 0xf8, 0xff, 0x00, 0x00, 0x00, 0xff, 0xff, 0x2b, 0x69, 0x50,
-	0x78, 0x44, 0x0d, 0x00, 0x00,
+	// 1257 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x57, 0xcf, 0x73, 0xdb, 0x44,
+	0x14, 0xae, 0xec, 0xc4, 0x49, 0x9f, 0x1d, 0xa7, 0x79, 0xb1, 0x13, 0xd7, 0x6e, 0x4d, 0x66, 0xdb,
+	0x42, 0x68, 0xa7, 0x11, 0xd3, 0x42, 0x81, 0x72, 0xa2, 0xa1, 0x3f, 0xcc, 0x74, 0xe8, 0xe0, 0xd0,
+	0x1c, 0x7c, 0xf1, 0xa8, 0xd2, 0x3a, 0xd6, 0xd8, 0x5e, 0x89, 0xdd, 0xb5, 0xa7, 0xbd, 0x72, 0xe5,
+	0xc2, 0x0c, 0x47, 0x38, 0xf3, 0x47, 0x70, 0x67, 0x86, 0x63, 0x67, 0xb8, 0x70, 0x64, 0x12, 0xfe,
+	0x10, 0x46, 0xbb, 0x92, 0x25, 0xd9, 0xb2, 0x9b, 0x0c, 0x37, 0xbd, 0xa7, 0xa7, 0xfd, 0xbe, 0xf7,
+	0xed, 0xb7, 0x6f, 0x56, 0x50, 0x9a, 0xf8, 0x4c, 0x4c, 0xec, 0x03, 0x9f, 0x7b, 0xd2, 0xc3, 0x82,
+	0x8e, 0xea, 0x8f, 0x4f, 0x5c, 0xd9, 0x1f, 0xbf, 0x3a, 0xb0, 0xbd, 0x91, 0x39, 0xa2, 0xd2, 0x9a,
+	0x50, 0x2e, 0xa8, 0x29, 0xf9, 0x58, 0x08, 0xd3, 0xa1, 0x3d, 0xc9, 0x29, 0x35, 0x4f, 0x3c, 0xef,
+	0x64, 0x48, 0x65, 0xdf, 0xe5, 0x8e, 0x6f, 0x71, 0xf9, 0xc6, 0xb4, 0x18, 0xf3, 0xa4, 0x25, 0x5d,
+	0x8f, 0x09, 0xbd, 0x1c, 0xa9, 0xc2, 0xf6, 0x53, 0x2a, 0x8f, 0x7d, 0x76, 0xe8, 0xb1, 0x9e, 0x7b,
+	0xd2, 0xa6, 0xdf, 0x8f, 0xa9, 0x90, 0x84, 0xc3, 0x7a, 0x90, 0xeb, 0x5b, 0x2e, 0xc3, 0x1a, 0xac,
+	0xd9, 0xc1, 0x43, 0xeb, 0xab, 0x9a, 0xb1, 0x67, 0xec, 0xaf, 0xb4, 0xa3, 0x10, 0x09, 0x94, 0xa4,
+	0x37, 0xa0, 0xec, 0x4b, 0xc7, 0xe1, 0x54, 0x88, 0x5a, 0x6e, 0xcf, 0xd8, 0xbf, 0xdc, 0x4e, 0xe5,
+	0x70, 0x1f, 0x36, 0x6d, 0x8f, 0x49, 0x6e, 0xd9, 0x32, 0x2a, 0xcb, 0xab, 0xb2, 0xd9, 0x34, 0xf9,
+	0xcd, 0x00, 0x4c, 0x73, 0x11, 0xe3, 0xa1, 0xc4, 0x3d, 0x28, 0xfa, 0xdc, 0xb5, 0x69, 0x8b, 0xbd,
+	0x14, 0x8e, 0x54, 0x14, 0xf2, 0xed, 0x64, 0x0a, 0xdf, 0x87, 0xb2, 0x90, 0xfc, 0x30, 0x5a, 0xee,
+	0x51, 0x2b, 0x24, 0x32, 0x93, 0xc5, 0x27, 0x50, 0xf5, 0xc7, 0xdc, 0xee, 0x5b, 0x82, 0x6a, 0x84,
+	0x17, 0xba, 0xc3, 0x5a, 0x7e, 0x2f, 0xbf, 0x5f, 0xbc, 0x77, 0xe5, 0x20, 0x14, 0x3a, 0xea, 0xbc,
+	0x9d, 0x5d, 0x4e, 0x7c, 0xa8, 0xcc, 0xf0, 0xf4, 0x3d, 0x26, 0x28, 0x22, 0xac, 0xd8, 0x9e, 0x43,
+	0x43, 0x95, 0xd4, 0x33, 0x1e, 0xc0, 0x8a, 0x63, 0x49, 0x4b, 0x31, 0x2a, 0xde, 0xab, 0x47, 0x10,
+	0xf3, 0x7d, 0xb6, 0x55, 0x1d, 0x56, 0x60, 0x95, 0x72, 0xee, 0xf1, 0x50, 0x24, 0x1d, 0x90, 0x07,
+	0x50, 0x3f, 0x1c, 0x52, 0x8b, 0x3d, 0x7e, 0xed, 0xbb, 0x9c, 0x3a, 0xc7, 0x3e, 0x7b, 0xee, 0xb2,
+	0x41, 0xb8, 0x59, 0xc1, 0x06, 0x51, 0xe6, 0x7c, 0xe7, 0x8e, 0x68, 0xa8, 0x4e, 0x14, 0x92, 0xa7,
+	0xd0, 0xc8, 0xfc, 0x6e, 0x09, 0xe1, 0x29, 0x81, 0x5c, 0x92, 0xc0, 0x11, 0x34, 0x8e, 0x29, 0x77,
+	0x7b, 0x6f, 0x5e, 0x70, 0x87, 0xf2, 0x27, 0xdc, 0x1b, 0x69, 0x85, 0x42, 0x06, 0x15, 0x58, 0x55,
+	0x9e, 0x08, 0x57, 0xd2, 0x01, 0x36, 0x01, 0x84, 0xb4, 0xb8, 0x7c, 0x34, 0xf4, 0xec, 0x81, 0x5a,
+	0x2f, 0xdf, 0x4e, 0x64, 0xc8, 0x33, 0xb8, 0x96, 0xbd, 0xe8, 0x85, 0xe9, 0x3d, 0x50, 0x3b, 0x72,
+	0x44, 0xf9, 0x84, 0xf2, 0xe7, 0xae, 0x90, 0x11, 0xaf, 0x26, 0x00, 0x95, 0xfd, 0xc8, 0x77, 0x86,
+	0xfa, 0x24, 0x91, 0x21, 0x9f, 0xc2, 0x56, 0xea, 0xbb, 0x96, 0xa4, 0x23, 0x2c, 0x43, 0xce, 0xf5,
+	0xc3, 0xe2, 0x9c, 0xeb, 0x07, 0x34, 0x98, 0x35, 0xa2, 0x21, 0xa2, 0x7a, 0x26, 0x5f, 0xab, 0x63,
+	0x93, 0x04, 0x54, 0x5e, 0xbd, 0x0f, 0x6b, 0x42, 0xe5, 0x02, 0xb0, 0xc0, 0x53, 0x57, 0x13, 0x1b,
+	0x9e, 0x86, 0x69, 0x47, 0x95, 0x84, 0x43, 0x75, 0x76, 0xad, 0xc5, 0xfd, 0x9b, 0x29, 0x3f, 0x35,
+	0x32, 0x97, 0x3f, 0x87, 0xa1, 0xbe, 0x49, 0x09, 0x16, 0x5b, 0xe9, 0x1d, 0x82, 0xe1, 0x0e, 0x14,
+	0x34, 0xed, 0x50, 0x8d, 0x30, 0x22, 0x2f, 0x53, 0x3d, 0xbc, 0xc3, 0x62, 0x98, 0xe8, 0xe1, 0xf2,
+	0x52, 0x9a, 0x1f, 0x41, 0xf9, 0xd8, 0x67, 0x2d, 0xd6, 0xf3, 0xce, 0xbb, 0xa3, 0x07, 0x50, 0x3a,
+	0x1a, 0xbf, 0x12, 0x36, 0x77, 0xfd, 0x60, 0xcc, 0xa9, 0x7a, 0x65, 0xfe, 0xe9, 0xf1, 0x08, 0xea,
+	0xa7, 0x19, 0xf2, 0xbb, 0xa1, 0x26, 0x9d, 0x72, 0x60, 0x70, 0x90, 0xbc, 0xe0, 0xa1, 0xe5, 0x84,
+	0x95, 0x51, 0xa8, 0xfa, 0x96, 0x96, 0x1c, 0x8b, 0x69, 0xdf, 0x2a, 0x0a, 0xf2, 0xd6, 0xc8, 0x1b,
+	0x33, 0x19, 0xf2, 0x0e, 0xa3, 0xf8, 0x40, 0xac, 0xe8, 0x76, 0xf4, 0x81, 0xa8, 0xc0, 0xaa, 0x9a,
+	0x8d, 0xb5, 0x55, 0x9d, 0x55, 0x41, 0x80, 0x2a, 0x5f, 0xb3, 0x67, 0x96, 0xe8, 0xd7, 0x0a, 0x1a,
+	0x35, 0x0c, 0x03, 0xf2, 0x36, 0xa7, 0x96, 0xd4, 0xe4, 0xd7, 0x34, 0xf9, 0x38, 0x43, 0x7e, 0x34,
+	0x60, 0x63, 0xaa, 0x8f, 0x32, 0x60, 0xcc, 0x53, 0x0b, 0x1e, 0xf1, 0xfc, 0x0c, 0x4a, 0x22, 0x21,
+	0x4b, 0x68, 0x9f, 0x4a, 0x64, 0x9f, 0xa4, 0x64, 0xed, 0x54, 0x25, 0xee, 0x43, 0x41, 0x89, 0x20,
+	0x32, 0xa6, 0xa4, 0x52, 0xad, 0x1d, 0xbe, 0x27, 0x3d, 0xd8, 0x8c, 0xc9, 0x2c, 0xde, 0xfd, 0x0f,
+	0x53, 0x0e, 0xae, 0x26, 0x96, 0x8b, 0xfb, 0x58, 0x6a, 0x8a, 0x8f, 0x01, 0x9f, 0x50, 0x69, 0xf7,
+	0x15, 0xba, 0x38, 0xaf, 0x31, 0x28, 0x6c, 0xa7, 0xbe, 0x5a, 0xc2, 0xf0, 0xe6, 0x94, 0x61, 0x76,
+	0xc3, 0xcb, 0xc8, 0x7d, 0x0b, 0xd5, 0x18, 0xe6, 0x02, 0xc6, 0x4d, 0x7a, 0x2f, 0x97, 0xf2, 0x1e,
+	0xe9, 0xc3, 0xce, 0xec, 0x92, 0xe7, 0x22, 0x6f, 0x5c, 0x98, 0xfc, 0x5d, 0xd8, 0x3a, 0x54, 0xee,
+	0xd2, 0xa5, 0xda, 0x52, 0x0b, 0x0f, 0x05, 0xe9, 0x01, 0xa6, 0xca, 0xcf, 0xdd, 0xa8, 0xbe, 0x3f,
+	0xe8, 0x46, 0xa7, 0xd7, 0x09, 0x75, 0xc8, 0xfc, 0xa1, 0x15, 0xbc, 0xc8, 0x6b, 0xf3, 0xea, 0x88,
+	0x30, 0xd8, 0x4e, 0xd3, 0x5a, 0xdc, 0xfd, 0xdd, 0x54, 0xf7, 0xd3, 0xe9, 0x3b, 0xd7, 0xd5, 0x52,
+	0x19, 0xee, 0xc0, 0xd6, 0x4b, 0xdf, 0x99, 0x91, 0x21, 0x7d, 0xb2, 0xd6, 0xa3, 0x93, 0x45, 0xfa,
+	0x80, 0xa9, 0xe2, 0xff, 0xb9, 0xdb, 0xc9, 0x69, 0x90, 0x4f, 0x4d, 0x83, 0x40, 0x86, 0x34, 0xad,
+	0x0b, 0xcb, 0x30, 0xd7, 0xd5, 0x32, 0x19, 0xee, 0xfd, 0x71, 0x19, 0x0a, 0xc7, 0xea, 0x43, 0x1c,
+	0x43, 0x31, 0x21, 0x21, 0xd6, 0x33, 0x75, 0x55, 0x9d, 0xd7, 0x1b, 0xd9, 0x9a, 0x2b, 0xae, 0xe4,
+	0xee, 0x0f, 0x7f, 0xfd, 0xfb, 0x73, 0xee, 0x03, 0xb2, 0x61, 0xaa, 0x76, 0x4d, 0x3d, 0xcb, 0x1e,
+	0x1a, 0xb7, 0x3b, 0xdb, 0xa4, 0x9c, 0xca, 0x99, 0x0f, 0x8d, 0xdb, 0x01, 0x6c, 0x82, 0x72, 0x0c,
+	0x3b, 0x2f, 0x78, 0x0c, 0x9b, 0x21, 0xd1, 0x1c, 0xec, 0x58, 0xd5, 0xa4, 0x61, 0x75, 0x4e, 0xc1,
+	0x1e, 0xc1, 0x5a, 0x38, 0x8d, 0x70, 0x67, 0x6e, 0x3c, 0x69, 0xb8, 0xdd, 0xf9, 0xb1, 0xa5, 0xa1,
+	0x76, 0x15, 0xd4, 0x16, 0xae, 0x9a, 0x2e, 0xeb, 0x79, 0x9d, 0x75, 0x2c, 0xa8, 0x07, 0x13, 0x6d,
+	0x28, 0x26, 0xe6, 0x4f, 0xdc, 0xcb, 0xfc, 0x28, 0x8b, 0x7b, 0xc9, 0x18, 0x58, 0xa4, 0xa1, 0x00,
+	0xaa, 0xb8, 0xa6, 0x79, 0x8b, 0x0e, 0xe0, 0x7a, 0xf8, 0x68, 0xa2, 0x84, 0x72, 0x7a, 0x54, 0xe0,
+	0xf5, 0xf9, 0xb5, 0x92, 0x7d, 0x34, 0x17, 0xbd, 0x0e, 0xd1, 0x6e, 0x28, 0xb4, 0xeb, 0x58, 0xd4,
+	0x10, 0x5d, 0xd5, 0x54, 0x19, 0x4b, 0x89, 0xd0, 0x44, 0x01, 0x1b, 0xa9, 0xfb, 0x07, 0x5e, 0x5b,
+	0x70, 0x2d, 0xd1, 0x98, 0xd7, 0x17, 0x5d, 0x5a, 0x34, 0xe4, 0x2d, 0x05, 0xf9, 0x1e, 0x96, 0x4c,
+	0x7d, 0xb7, 0xe8, 0x0e, 0x5d, 0x21, 0x3b, 0x9b, 0xb8, 0x91, 0x8c, 0x67, 0x41, 0xd9, 0x20, 0x13,
+	0x74, 0x7a, 0xb1, 0xc9, 0x04, 0x8d, 0xaf, 0x29, 0x59, 0xa0, 0x6c, 0x90, 0x06, 0x65, 0x03, 0x13,
+	0x7f, 0x35, 0xa0, 0x92, 0x75, 0x65, 0xc5, 0x1b, 0x53, 0x3f, 0x2c, 0xbe, 0x25, 0xd7, 0x6f, 0x2e,
+	0x2f, 0x0a, 0xa9, 0x7c, 0xae, 0xa8, 0xdc, 0xc7, 0x1d, 0x53, 0xbc, 0x61, 0x76, 0x57, 0x0b, 0xdd,
+	0xe3, 0xde, 0xa8, 0xab, 0xe6, 0x64, 0xe7, 0x2a, 0xee, 0x66, 0xbf, 0x31, 0xf1, 0x17, 0x03, 0xb6,
+	0x33, 0xee, 0xfb, 0x48, 0xa6, 0x67, 0x72, 0xe1, 0x4f, 0x44, 0xfd, 0xc6, 0xd2, 0x9a, 0x90, 0xdb,
+	0x17, 0x8a, 0xdb, 0x27, 0xb8, 0x6b, 0xda, 0x41, 0x55, 0x57, 0x5f, 0xa4, 0x9c, 0xee, 0xc4, 0x67,
+	0x5a, 0xb1, 0x3a, 0xd6, 0x16, 0xbc, 0x32, 0x71, 0x02, 0xa5, 0xe4, 0x6f, 0x0f, 0x36, 0xb2, 0x7f,
+	0x86, 0x34, 0x9d, 0x6b, 0x0b, 0xfe, 0x94, 0x34, 0x8f, 0x3b, 0x8a, 0xc7, 0x2d, 0xdc, 0x34, 0x4f,
+	0xa8, 0x54, 0x10, 0xb6, 0x2a, 0xe8, 0x20, 0x5e, 0x99, 0x49, 0x99, 0x8f, 0x6a, 0x7f, 0x9e, 0x36,
+	0x8d, 0xb7, 0xa7, 0x4d, 0xe3, 0x9f, 0xd3, 0xa6, 0xf1, 0xd3, 0x59, 0xf3, 0xd2, 0xdb, 0xb3, 0xe6,
+	0xa5, 0xbf, 0xcf, 0x9a, 0x97, 0x5e, 0x15, 0xd4, 0x3f, 0xf0, 0xfd, 0xff, 0x02, 0x00, 0x00, 0xff,
+	0xff, 0x44, 0x0e, 0x4e, 0x0c, 0x62, 0x0f, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1510,6 +1740,7 @@ type VpnsvcClient interface {
 	GetServerLink(ctx context.Context, in *GetServerLinkRequest, opts ...grpc.CallOption) (*GetServerLinkResponse, error)
 	VerifyOrderFromChain(ctx context.Context, in *VerifyOrderFromChainRequest, opts ...grpc.CallOption) (*VerifyOrderFromChainResponse, error)
 	CleanExpiredVpnLink(ctx context.Context, in *CleanExpiredVpnLinkRequest, opts ...grpc.CallOption) (*CleanExpiredVpnLinkResponse, error)
+	GetVpnConfig(ctx context.Context, in *GetVpnConfigRequest, opts ...grpc.CallOption) (*GetVpnConfigResponse, error)
 }
 
 type vpnsvcClient struct {
@@ -1601,6 +1832,15 @@ func (c *vpnsvcClient) CleanExpiredVpnLink(ctx context.Context, in *CleanExpired
 	return out, nil
 }
 
+func (c *vpnsvcClient) GetVpnConfig(ctx context.Context, in *GetVpnConfigRequest, opts ...grpc.CallOption) (*GetVpnConfigResponse, error) {
+	out := new(GetVpnConfigResponse)
+	err := c.cc.Invoke(ctx, "/vpnsvc.Vpnsvc/GetVpnConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // VpnsvcServer is the server API for Vpnsvc service.
 type VpnsvcServer interface {
 	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderResponse, error)
@@ -1612,6 +1852,7 @@ type VpnsvcServer interface {
 	GetServerLink(context.Context, *GetServerLinkRequest) (*GetServerLinkResponse, error)
 	VerifyOrderFromChain(context.Context, *VerifyOrderFromChainRequest) (*VerifyOrderFromChainResponse, error)
 	CleanExpiredVpnLink(context.Context, *CleanExpiredVpnLinkRequest) (*CleanExpiredVpnLinkResponse, error)
+	GetVpnConfig(context.Context, *GetVpnConfigRequest) (*GetVpnConfigResponse, error)
 }
 
 // UnimplementedVpnsvcServer can be embedded to have forward compatible implementations.
@@ -1644,6 +1885,9 @@ func (*UnimplementedVpnsvcServer) VerifyOrderFromChain(ctx context.Context, req 
 }
 func (*UnimplementedVpnsvcServer) CleanExpiredVpnLink(ctx context.Context, req *CleanExpiredVpnLinkRequest) (*CleanExpiredVpnLinkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CleanExpiredVpnLink not implemented")
+}
+func (*UnimplementedVpnsvcServer) GetVpnConfig(ctx context.Context, req *GetVpnConfigRequest) (*GetVpnConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVpnConfig not implemented")
 }
 
 func RegisterVpnsvcServer(s *grpc.Server, srv VpnsvcServer) {
@@ -1812,6 +2056,24 @@ func _Vpnsvc_CleanExpiredVpnLink_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Vpnsvc_GetVpnConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVpnConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VpnsvcServer).GetVpnConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/vpnsvc.Vpnsvc/GetVpnConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VpnsvcServer).GetVpnConfig(ctx, req.(*GetVpnConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Vpnsvc_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "vpnsvc.Vpnsvc",
 	HandlerType: (*VpnsvcServer)(nil),
@@ -1852,9 +2114,146 @@ var _Vpnsvc_serviceDesc = grpc.ServiceDesc{
 			MethodName: "CleanExpiredVpnLink",
 			Handler:    _Vpnsvc_CleanExpiredVpnLink_Handler,
 		},
+		{
+			MethodName: "GetVpnConfig",
+			Handler:    _Vpnsvc_GetVpnConfig_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "vpnsvc.proto",
+}
+
+func (m *GetVpnConfigRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetVpnConfigRequest) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *VpnChain) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *VpnChain) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.ChainID != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(m.ChainID))
+	}
+	if len(m.TokenAddress) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(len(m.TokenAddress)))
+		i += copy(dAtA[i:], m.TokenAddress)
+	}
+	if len(m.ContractAddress) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(len(m.ContractAddress)))
+		i += copy(dAtA[i:], m.ContractAddress)
+	}
+	return i, nil
+}
+
+func (m *GetVpnConfigResult) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetVpnConfigResult) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.PriceInUsdt != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(m.PriceInUsdt))
+	}
+	if len(m.StrContractABI) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(len(m.StrContractABI)))
+		i += copy(dAtA[i:], m.StrContractABI)
+	}
+	if len(m.PurchaseConfigOnChain) > 0 {
+		for _, msg := range m.PurchaseConfigOnChain {
+			dAtA[i] = 0x1a
+			i++
+			i = encodeVarintVpnsvc(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	return i, nil
+}
+
+func (m *GetVpnConfigResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetVpnConfigResponse) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Code != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Code))
+	}
+	if m.Data != nil {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
+		n1, err1 := m.Data.MarshalTo(dAtA[i:])
+		if err1 != nil {
+			return 0, err1
+		}
+		i += n1
+	}
+	if len(m.Error) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintVpnsvc(dAtA, i, uint64(len(m.Error)))
+		i += copy(dAtA[i:], m.Error)
+	}
+	return i, nil
 }
 
 func (m *CleanExpiredVpnLinkRequest) Marshal() (dAtA []byte, err error) {
@@ -2074,11 +2473,11 @@ func (m *GetServerListResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
-		n1, err1 := m.Data.MarshalTo(dAtA[i:])
-		if err1 != nil {
-			return 0, err1
+		n2, err2 := m.Data.MarshalTo(dAtA[i:])
+		if err2 != nil {
+			return 0, err2
 		}
-		i += n1
+		i += n2
 	}
 	if len(m.Error) > 0 {
 		dAtA[i] = 0x1a
@@ -2286,11 +2685,11 @@ func (m *VpnInfoResult) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Subscription.Size()))
-		n2, err2 := m.Subscription.MarshalTo(dAtA[i:])
-		if err2 != nil {
-			return 0, err2
+		n3, err3 := m.Subscription.MarshalTo(dAtA[i:])
+		if err3 != nil {
+			return 0, err3
 		}
-		i += n2
+		i += n3
 	}
 	if len(m.Orders) > 0 {
 		for _, msg := range m.Orders {
@@ -2331,11 +2730,11 @@ func (m *VpnInfoResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
-		n3, err3 := m.Data.MarshalTo(dAtA[i:])
-		if err3 != nil {
-			return 0, err3
+		n4, err4 := m.Data.MarshalTo(dAtA[i:])
+		if err4 != nil {
+			return 0, err4
 		}
-		i += n3
+		i += n4
 	}
 	if len(m.Error) > 0 {
 		dAtA[i] = 0x1a
@@ -2465,11 +2864,11 @@ func (m *FetchOrderInfoResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
-		n4, err4 := m.Data.MarshalTo(dAtA[i:])
-		if err4 != nil {
-			return 0, err4
+		n5, err5 := m.Data.MarshalTo(dAtA[i:])
+		if err5 != nil {
+			return 0, err5
 		}
-		i += n4
+		i += n5
 	}
 	if len(m.Error) > 0 {
 		dAtA[i] = 0x1a
@@ -2562,11 +2961,11 @@ func (m *CreateOrderResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
-		n5, err5 := m.Data.MarshalTo(dAtA[i:])
-		if err5 != nil {
-			return 0, err5
+		n6, err6 := m.Data.MarshalTo(dAtA[i:])
+		if err6 != nil {
+			return 0, err6
 		}
-		i += n5
+		i += n6
 	}
 	if len(m.Error) > 0 {
 		dAtA[i] = 0x1a
@@ -2665,11 +3064,11 @@ func (m *UpdateOrderResponse) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintVpnsvc(dAtA, i, uint64(m.Data.Size()))
-		n6, err6 := m.Data.MarshalTo(dAtA[i:])
-		if err6 != nil {
-			return 0, err6
+		n7, err7 := m.Data.MarshalTo(dAtA[i:])
+		if err7 != nil {
+			return 0, err7
 		}
-		i += n6
+		i += n7
 	}
 	if len(m.Error) > 0 {
 		dAtA[i] = 0x1a
@@ -2689,6 +3088,77 @@ func encodeVarintVpnsvc(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+func (m *GetVpnConfigRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *VpnChain) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.ChainID != 0 {
+		n += 1 + sovVpnsvc(uint64(m.ChainID))
+	}
+	l = len(m.TokenAddress)
+	if l > 0 {
+		n += 1 + l + sovVpnsvc(uint64(l))
+	}
+	l = len(m.ContractAddress)
+	if l > 0 {
+		n += 1 + l + sovVpnsvc(uint64(l))
+	}
+	return n
+}
+
+func (m *GetVpnConfigResult) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.PriceInUsdt != 0 {
+		n += 1 + sovVpnsvc(uint64(m.PriceInUsdt))
+	}
+	l = len(m.StrContractABI)
+	if l > 0 {
+		n += 1 + l + sovVpnsvc(uint64(l))
+	}
+	if len(m.PurchaseConfigOnChain) > 0 {
+		for _, e := range m.PurchaseConfigOnChain {
+			l = e.Size()
+			n += 1 + l + sovVpnsvc(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *GetVpnConfigResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Code != 0 {
+		n += 1 + sovVpnsvc(uint64(m.Code))
+	}
+	if m.Data != nil {
+		l = m.Data.Size()
+		n += 1 + l + sovVpnsvc(uint64(l))
+	}
+	l = len(m.Error)
+	if l > 0 {
+		n += 1 + l + sovVpnsvc(uint64(l))
+	}
+	return n
+}
+
 func (m *CleanExpiredVpnLinkRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -3137,6 +3607,473 @@ func sovVpnsvc(x uint64) (n int) {
 }
 func sozVpnsvc(x uint64) (n int) {
 	return sovVpnsvc(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *GetVpnConfigRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowVpnsvc
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetVpnConfigRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetVpnConfigRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipVpnsvc(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *VpnChain) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowVpnsvc
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: VpnChain: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: VpnChain: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ChainID", wireType)
+			}
+			m.ChainID = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ChainID |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TokenAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.TokenAddress = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractAddress", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractAddress = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipVpnsvc(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetVpnConfigResult) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowVpnsvc
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetVpnConfigResult: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetVpnConfigResult: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PriceInUsdt", wireType)
+			}
+			m.PriceInUsdt = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PriceInUsdt |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StrContractABI", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StrContractABI = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PurchaseConfigOnChain", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PurchaseConfigOnChain = append(m.PurchaseConfigOnChain, &VpnChain{})
+			if err := m.PurchaseConfigOnChain[len(m.PurchaseConfigOnChain)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipVpnsvc(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetVpnConfigResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowVpnsvc
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetVpnConfigResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetVpnConfigResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			m.Code = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Code |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Data == nil {
+				m.Data = &GetVpnConfigResult{}
+			}
+			if err := m.Data.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowVpnsvc
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Error = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipVpnsvc(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthVpnsvc
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *CleanExpiredVpnLinkRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
