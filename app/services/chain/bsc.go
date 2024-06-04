@@ -86,7 +86,7 @@ func NewBsc(test bool) (*Bsc, error) {
 func (bt *Bsc) VerifyOrders(ctx context.Context, startBlock int64) error {
 	// startBlock
 	if startBlock <= 0 {
-		lastBlock, err := models.GetLastBlockNumberFromChain(ctx, enum.ChainIDBscTest)
+		lastBlock, err := models.GetLastBlockNumberFromChain(ctx, bt.ChainID)
 		if err != nil {
 			return err
 		}
