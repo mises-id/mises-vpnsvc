@@ -49,10 +49,12 @@ func GetLastBlockNumberFromChain(ctx context.Context, chainID uint64) (int64, er
 		"chain_id": chainID,
 	})
 	err := result.Err()
-	if errors.Is(err, mongo.ErrNoDocuments) {
-		return 0, nil
-	} else {
-		return 0, err
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return 0, nil
+		} else {
+			return 0, err
+		}
 	}
 	if err := result.Decode(res); err != nil {
 		return 0, err
