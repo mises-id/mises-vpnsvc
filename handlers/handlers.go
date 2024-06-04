@@ -5,8 +5,9 @@ import (
 	"errors"
 	"github.com/mises-id/mises-vpnsvc/app/models"
 	"github.com/mises-id/mises-vpnsvc/app/models/enum"
-	"github.com/mises-id/mises-vpnsvc/app/services"
 	"github.com/mises-id/mises-vpnsvc/app/services/chain"
+	"github.com/mises-id/mises-vpnsvc/app/services/order"
+	"github.com/mises-id/mises-vpnsvc/app/services/vpn"
 	"github.com/mises-id/mises-vpnsvc/lib/utils"
 	pb "github.com/mises-id/mises-vpnsvc/proto"
 	"github.com/sirupsen/logrus"
@@ -30,13 +31,13 @@ func (s vpnsvcService) UpdateOrder(ctx context.Context, in *pb.UpdateOrderReques
 	}
 
 	// todo:only for test
-	//if err := services.UpdateOrderAndAccount(ctx, in); err != nil {
-	//	return nil, err
-	//}
-
-	if err := services.UpdateOrderOnPending(ctx, in); err != nil {
+	if err := order.UpdateOrderAndAccountForTest(ctx, in); err != nil {
 		return nil, err
 	}
+
+	//if err := services.UpdateOrderOnPending(ctx, in); err != nil {
+	//	return nil, err
+	//}
 
 	var resp pb.UpdateOrderResponse
 	resp.Code = 0
@@ -141,7 +142,7 @@ func (s vpnsvcService) FetchOrderInfo(ctx context.Context, in *pb.FetchOrderInfo
 	if err != nil {
 		return nil, errors.New("order id error")
 	}
-	order, err := models.FindVpnOrderByID(ctx, in.EthAddress, id)
+	order, err := models.FindUserVpnOrderByID(ctx, in.EthAddress, id)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +192,7 @@ func (s vpnsvcService) FetchOrders(ctx context.Context, in *pb.FetchOrdersReques
 }
 
 func (s vpnsvcService) GetServerList(ctx context.Context, in *pb.GetServerListRequest) (*pb.GetServerListResponse, error) {
-	serverList, err := services.GetServerList(ctx, in)
+	serverList, err := vpn.GetServerList(ctx, in)
 	if err != nil {
 		logrus.Error("GetServerList error:", err)
 		return nil, err
@@ -205,7 +206,7 @@ func (s vpnsvcService) GetServerList(ctx context.Context, in *pb.GetServerListRe
 }
 
 func (s vpnsvcService) GetServerLink(ctx context.Context, in *pb.GetServerLinkRequest) (*pb.GetServerLinkResponse, error) {
-	link, err := services.GetServerLink(ctx, in)
+	link, err := vpn.GetServerLink(ctx, in)
 	if err != nil {
 		logrus.Error("GetServerLink error:", err)
 		return nil, err
@@ -229,7 +230,7 @@ func (s vpnsvcService) VerifyOrderFromChain(ctx context.Context, in *pb.VerifyOr
 func (s vpnsvcService) CleanExpiredVpnLink(ctx context.Context, in *pb.CleanExpiredVpnLinkRequest) (*pb.CleanExpiredVpnLinkResponse, error) {
 	// for production
 	//go services.CleanExpiredVpnLink(ctx, in)
-	err := services.CleanExpiredVpnLink(ctx, in)
+	err := vpn.CleanExpiredVpnLink(ctx, in)
 	if err != nil {
 		return nil, err
 	}

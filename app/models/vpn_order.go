@@ -152,7 +152,21 @@ func PageVpnOrder(ctx context.Context, params IAdminPageParams) ([]*VpnOrder, pa
 	return out, page, nil
 }
 
-func FindVpnOrderByID(ctx context.Context, misesId string, orderId primitive.ObjectID) (*VpnOrder, error) {
+func FindVpnOrderByID(ctx context.Context, orderId primitive.ObjectID) (*VpnOrder, error) {
+	res := &VpnOrder{}
+	result := db.DB().Collection("vpnorder").FindOne(ctx, &bson.M{
+		"_id":     orderId,
+	})
+	if err := result.Err(); err != nil {
+		return nil, err
+	}
+	if err := result.Decode(res); err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+func FindUserVpnOrderByID(ctx context.Context, misesId string, orderId primitive.ObjectID) (*VpnOrder, error) {
 	res := &VpnOrder{}
 	result := db.DB().Collection("vpnorder").FindOne(ctx, &bson.M{
 		"misesid": misesId,
@@ -201,8 +215,25 @@ func (u *VpnOrder) UpdateOrderOnPayById(ctx context.Context) error {
 	update["txn_hash"] = u.TxnHash
 	update["status"] = u.Status
 	update["order_at"] = u.OrderAt
+	update["block_number"] = u.BlockNumber
 	currentStatus := []enum.VpnOrderStatus{enum.VpnOrderInit, enum.VpnOrderPending}
-	ret, err := db.DB().Collection("vpnorder").UpdateOne(ctx, &bson.M{"_id": u.ID, "misesid": u.MisesID, "status": bson.M{"$in": currentStatus}}, bson.D{{Key: "$set", Value: update}})
+	ret, err := db.DB().Collection("vpnorder").UpdateOne(ctx, &bson.M{"_id": u.ID, "status": bson.M{"$in": currentStatus}}, bson.D{{Key: "$set", Value: update}})
+	if err != nil {
+		return err
+	}
+	if ret.ModifiedCount == 0 {
+		return errors.New("update order error")
+	}
+	return nil
+}
+
+func (u *VpnOrder) UpdateOrderOnPayByIdForTest(ctx context.Context) error {
+	update := bson.M{}
+	update["txn_hash"] = u.TxnHash
+	update["status"] = u.Status
+	update["order_at"] = u.OrderAt
+	currentStatus := []enum.VpnOrderStatus{enum.VpnOrderInit, enum.VpnOrderPending}
+	ret, err := db.DB().Collection("vpnorder").UpdateOne(ctx, &bson.M{"_id": u.ID, "misesid":u.MisesID, "status": bson.M{"$in": currentStatus}}, bson.D{{Key: "$set", Value: update}})
 	if err != nil {
 		return err
 	}

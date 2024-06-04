@@ -24,6 +24,7 @@ type Env struct {
 	BscContractAddress     string `env:"BSC_CONTRACT_ADDRESS" envDefault:""`
 	BscUsdtAddress         string `env:"BSC_USDT_ADDRESS" envDefault:""`
 	BscApiKey              string `env:"BSC_API_KEY" envDefault:""`
+	PriceInUSDT            int64  `env:"PRICE_IN_USDT" envDefault:""`
 	SyncVpnOrderMode       string `env:"SYNC_VPN_ORDER_MODE" envDefault:"close"`
 	RootPath               string
 }
