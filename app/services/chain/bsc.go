@@ -141,24 +141,31 @@ func (bt *Bsc) FilterTransactions(rs []*BscTransaction) ([]*order.TransactionDat
 	ret := make([]*order.TransactionDataForOrderUpdate, 0, len(rs))
 	for _, v := range rs {
 		if v.From == "" || v.Hash == "" {
+			logrus.Errorf("txn:%s, from or hash error: %s %s", v.Hash, v.From, v.Hash)
 			continue
 		}
 		if v.IsError != "0" {
+			logrus.Errorf("txn:%s, IsError error:%s", v.Hash, v.IsError)
 			continue
 		}
 		if v.TxReceiptStatus != "1" {
+			logrus.Errorf("txn:%s, TxReceiptStatus error:%s", v.Hash, v.TxReceiptStatus)
 			continue
 		}
 		if strings.ToLower(v.To) != bt.ContractAddress {
+			logrus.Errorf("txn:%s, To error:%s", v.Hash, v.To)
 			continue
 		}
 		if v.FunctionName != receiverFunction {
+			logrus.Errorf("txn:%s, FunctionName error:%s", v.Hash, v.FunctionName)
 			continue
 		}
 		if v.Input == "" {
+			logrus.Errorf("txn:%s, input error:%s", v.Hash, v.Input)
 			continue
 		}
 		if v.BlockNumber == "" {
+			logrus.Errorf("txn:%s, block number error:%s", v.Hash, v.BlockNumber)
 			continue
 		}
 		blockNumber, err := strconv.ParseInt(v.BlockNumber, 10, 64)

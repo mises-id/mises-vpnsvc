@@ -2,15 +2,12 @@ package chain
 
 import (
 	"fmt"
-	"math/big"
 	"testing"
 )
 
 func TestDecodeTransactionInput(t *testing.T) {
 	input := "0x057a401d0000000000000000000000007ce794304cbc54c3deea8afa175f5b2458dde46000000000000000000000000000000000000000000000000029a2241af62c0000000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000183636356433643132356135323866383665346138386164370000000000000000"
-	ret, _ := DecodeTransactionInput(input)
+	ret, err := DecodeTransactionInput(input)
+	fmt.Println(err)
 	fmt.Println(ret)
-	amount, _ := ret["amount"]
-	bigAmount := amount.(*big.Int)
-	fmt.Println(bigAmount.Cmp(priceInUSDTWithExp))
 }
